@@ -5,6 +5,8 @@ VisualStudioVersion = 17.2.32516.85
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wheelie", "Wheelie\Wheelie.csproj", "{554C8904-FB41-4D13-9787-27951EC3C6A9}"
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "WheelieClient", "WheelieClient\WheelieClient.esproj", "{CBF8E410-8EAD-4869-9331-BA93C4E5541A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,12 @@ Global
 		{554C8904-FB41-4D13-9787-27951EC3C6A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{554C8904-FB41-4D13-9787-27951EC3C6A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{554C8904-FB41-4D13-9787-27951EC3C6A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBF8E410-8EAD-4869-9331-BA93C4E5541A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBF8E410-8EAD-4869-9331-BA93C4E5541A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBF8E410-8EAD-4869-9331-BA93C4E5541A}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{CBF8E410-8EAD-4869-9331-BA93C4E5541A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBF8E410-8EAD-4869-9331-BA93C4E5541A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBF8E410-8EAD-4869-9331-BA93C4E5541A}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
