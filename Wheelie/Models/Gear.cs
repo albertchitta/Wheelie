@@ -6,5 +6,6 @@
         public int BikeId { get; set; }
         public int HelmetId { get; set; }
         public int ClothingId { get; set; }
+        public int BikerId { get; set; }
     }
 }

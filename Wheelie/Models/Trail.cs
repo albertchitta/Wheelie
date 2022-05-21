@@ -3,6 +3,7 @@
     public class Trail
     {
         public int Id { get; set; }
+        public int BikerId { get; set; }
         public string ImageUrl { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }

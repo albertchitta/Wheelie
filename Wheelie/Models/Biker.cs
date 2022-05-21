@@ -10,6 +10,9 @@ namespace Wheelie.Models
         public string FirebaseUserId { get; set; }
 
         [Required]
+        public string Role { get; set; }
+
+        [Required]
         public string Name { get; set; }
 
         [Required]
@@ -22,9 +25,7 @@ namespace Wheelie.Models
         public string Level { get; set; }
         public string Location { get; set; }
         public string ImageUrl { get; set; }
-        public double Rides { get; set; }
+        public int Rides { get; set; }
         public double Distance { get; set; }
-        public int GearId { get; set; }
-        public int TrailId { get; set; }
     }
 }
