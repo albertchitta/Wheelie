@@ -77,6 +77,7 @@ namespace Wheelie.Controllers
             else
             {
                 _bikerRepo.UpdateBiker(biker);
+
                 return NoContent();
             }
         }
@@ -93,6 +94,7 @@ namespace Wheelie.Controllers
             else
             {
                 _bikerRepo.DeleteBiker(biker.FirebaseUserId);
+
                 return NoContent();
             }
         }
