@@ -16,80 +16,85 @@ namespace Wheelie.Controllers
             _bikerRepo = bikerRepository;
         }
 
-        // GET: BikerController
+        // GET: api/bikers
         [HttpGet]
         public List<Biker> Get()
         {
             return _bikerRepo.GetAllBikers();
         }
 
-        //// GET: BikerController/Details/5
-        //public ActionResult Details(int id)
-        //{
-        //    return View();
-        //}
+        // GET: api/bikers/{firebaseUserId}
+        [HttpGet("{firebaseUserId}")]
+        public IActionResult GetByFirebaseUserId(string firebaseUserId)
+        {
+            var biker = _bikerRepo.GetByFirebaseUserId(firebaseUserId);
+            if (biker == null)
+            {
+                return NotFound();
+            }
 
-        //// GET: BikerController/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
+            return Ok(biker);
+        }
 
-        //// POST: BikerController/Create
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create(IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [Authorize]
+        [HttpGet("DoesUserExist/{firebaseUserId}")]
+        public IActionResult DoesUserExist(string firebaseUserId)
+        {
+            var biker = _bikerRepo.GetByFirebaseUserId(firebaseUserId);
+            if (biker == null)
+            {
+                return NotFound();
+            }
 
-        //// GET: BikerController/Edit/5
-        //public ActionResult Edit(int id)
-        //{
-        //    return View();
-        //}
+            return Ok();
+        }
 
-        //// POST: BikerController/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        // POST api/biker
+        [HttpPost]
+        public IActionResult Post(Biker biker)
+        {
+            // All newly registered users start out as a "user" user type (i.e. they are not admins)
+            biker.Role = "user";
+            _bikerRepo.AddBiker(biker);
+            return CreatedAtAction(
+                nameof(GetByFirebaseUserId), new { firebaseUserId = biker.FirebaseUserId }, biker);
+        }
 
-        //// GET: BikerController/Delete/5
-        //public ActionResult Delete(int id)
-        //{
-        //    return View();
-        //}
+        // PATCH api/bikers/{firebaseUserId}
+        [HttpPatch("{firebaseUserId}")]
+        public IActionResult Patch(string firebaseUserId, Biker biker)
+        {
+            if (firebaseUserId != biker.FirebaseUserId)
+            {
+                return BadRequest();
+            }
 
-        //// POST: BikerController/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            var existingBiker = _bikerRepo.GetByFirebaseUserId(firebaseUserId);
+            if (existingBiker == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _bikerRepo.UpdateBiker(biker);
+                return NoContent();
+            }
+        }
+
+        // DELETE api/bikers/{firebaseUserId}
+        [HttpDelete("{firebaseUserId}")]
+        public IActionResult Delete(string firebaseUserId)
+        {
+            var biker = _bikerRepo.GetByFirebaseUserId(firebaseUserId);
+            if (biker == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                _bikerRepo.DeleteBiker(biker.FirebaseUserId);
+                return NoContent();
+            }
+        }
     }
 }
