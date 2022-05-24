@@ -42,7 +42,7 @@ builder.Services.AddTransient<IBikerRepository, BikerRepository>();
 //builder.Services.AddTransient<IClothingRepository, ClothingRepository>();
 //builder.Services.AddTransient<IGearRepository, GearRepository>();
 //builder.Services.AddTransient<IHelmetRepository, HelmetRepository>();
-//builder.Services.AddTransient<ITrailRepository, TrailRepository>();
+builder.Services.AddTransient<ITrailRepository, TrailRepository>();
 
 var app = builder.Build();
 

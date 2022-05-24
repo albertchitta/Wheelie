@@ -77,10 +77,12 @@ CREATE TABLE Trail (
 	[Location] VARCHAR(255) NOT NULL,
 	Distance DECIMAL(17, 2) NOT NULL,
 	Grade INTEGER NOT NULL
-
-	CONSTRAINT FK_Trail_Biker FOREIGN KEY (BikerId) REFERENCES Biker(Id)
 );
 
 INSERT INTO Biker (FirebaseUserId, [Role], [Name], Email, UserName, [Level], [Location], ImageUrl, Rides, Distance) VALUES ('QHpKr8hc6Ab0P5eTqugiLrUgCTB3', 'admin', 'Albert', 'albert123@gmail.com', 'albert123', 'Beginner', 'Houston, TX', 'imageUrl', 5, 20);
 INSERT INTO Biker (FirebaseUserId, [Role], [Name], Email, UserName, [Level], [Location], ImageUrl, Rides, Distance) VALUES ('aer76gLnNyQLEWa2C57PlzfKbmS2', 'user', 'Test123', 'test123@gmail.com', 'test123', 'Intermediate', 'Nashville, TN', 'imageUrl', 6, 30);
 INSERT INTO Biker (FirebaseUserId, [Role], [Name], Email, UserName, [Level], [Location], ImageUrl, Rides, Distance) VALUES ('282DswOGLNedZg3JfHUTnM8lbnl1', 'user', 'Test456', 'test456@gmail.com', 'test456', 'Advanced', 'Atlanta, GA', 'imageUrl', 7, 40);
+
+INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUES (1, 'imageUrl', 'Buffalo Bayou Trail', 'Houston, TX', 17, 1);
+INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUES (1, 'imageUrl', 'Greenway Trail', 'Murfreesboro, TN', 20, 1);
+INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUES (2, 'imageUrl', 'Hermann Park Trail', 'Houston, TX', 12, 1);
