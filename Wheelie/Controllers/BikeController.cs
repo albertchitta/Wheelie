@@ -5,80 +5,81 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Wheelie.Controllers
 {
-    public class BikeController : Controller
+    [Route("api/bikes")]
+    [ApiController]
+    public class BikeController : ControllerBase
     {
-        // GET: BikeController
-        public ActionResult Index()
+        private readonly IBikeRepository _bikeRepo;
+
+        public BikeController(IBikeRepository bikeRepository)
         {
-            return View();
+            _bikeRepo = bikeRepository;
+        }
+        // GET: api/bikes
+        [HttpGet]
+        public List<Bike> Get()
+        {
+            return _bikeRepo.GetAllBikes();
         }
 
-        // GET: BikeController/Details/5
-        public ActionResult Details(int id)
+        // GET: api/bikes/{id}
+        [HttpGet("{id}")]
+        public IActionResult GetBikeById(int id)
         {
-            return View();
+            var bike = _bikeRepo.GetBikeById(id);
+            if (bike == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(bike);
         }
 
-        // GET: BikeController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: BikeController/Create
+        // POST api/bike
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public IActionResult Post(Bike bike)
         {
-            try
+            _bikeRepo.AddBike(bike);
+
+            return Ok(bike);
+        }
+
+        // PATCH api/bikes/{id}
+        [HttpPatch("{id}")]
+        public IActionResult Patch(int id, Bike bike)
+        {
+            if (id != bike.Id)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest();
             }
-            catch
+
+            var existingBike = _bikeRepo.GetBikeById(id);
+            if (existingBike == null)
             {
-                return View();
+                return NotFound();
+            }
+            else
+            {
+                _bikeRepo.UpdateBike(bike);
+
+                return NoContent();
             }
         }
 
-        // GET: BikeController/Edit/5
-        public ActionResult Edit(int id)
+        // DELETE api/bikes/{id}
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            return View();
-        }
-
-        // POST: BikeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
+            var bike = _bikeRepo.GetBikeById(id);
+            if (bike == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
+            else
             {
-                return View();
-            }
-        }
+                _bikeRepo.DeleteBike(bike.Id);
 
-        // GET: BikeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: BikeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
+                return NoContent();
             }
         }
     }
