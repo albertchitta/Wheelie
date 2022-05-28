@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react";
+// import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { onLoginStatusChange } from "./api/authManager";
+import PublicRoutes from "./routes/PublicRoutes";
+// import { getBiker } from "./api/data/BikerData";
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  // const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    onLoginStatusChange(setIsLoggedIn);
+
+    // const auth = getAuth();
+    // onAuthStateChanged(auth, (user) => {
+    //     if (user) {
+    //         getBiker(user.uid).then((buyer) => {
+    //             if (buyer.role === "admin") {
+    //                 setIsAdmin(true);
+    //             }
+    //         });
+    //     }
+    // });
+}, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <PublicRoutes isLoggedIn={isLoggedIn} />
+    </>
   );
 }
 

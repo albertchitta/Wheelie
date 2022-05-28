@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Wheelie.Controllers
 {
-    [Route("api/trails")]
+    [Route("trails")]
     [ApiController]
     public class TrailController : ControllerBase
     {

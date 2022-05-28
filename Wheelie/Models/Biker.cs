@@ -23,6 +23,8 @@ namespace Wheelie.Models
 
         [Required]
         public string Level { get; set; }
+
+        [Required]
         public string Location { get; set; }
         public string ImageUrl { get; set; }
         public int Rides { get; set; }
