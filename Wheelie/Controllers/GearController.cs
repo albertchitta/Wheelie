@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Wheelie.Controllers
 {
-    [Route("api/gear")]
+    [Route("gear")]
     [ApiController]
     public class GearController : ControllerBase
     {

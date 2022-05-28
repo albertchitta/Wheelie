@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Wheelie.Controllers
 {
-    [Route("api/bikers")]
+    [Route("bikers")]
     [ApiController]
     public class BikerController : ControllerBase
     {
@@ -16,14 +16,16 @@ namespace Wheelie.Controllers
             _bikerRepo = bikerRepository;
         }
 
-        // GET: api/bikers
+        // GET: /bikers
+        [Authorize]
         [HttpGet]
         public List<Biker> Get()
         {
             return _bikerRepo.GetAllBikers();
         }
 
-        // GET: api/bikers/{firebaseUserId}
+        // GET: /bikers/{firebaseUserId}
+        [Authorize]
         [HttpGet("{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
         {
@@ -36,7 +38,7 @@ namespace Wheelie.Controllers
             return Ok(biker);
         }
 
-        [Authorize]
+        // GET: /bikers/DoesUserExist/{firebaseUserId}
         [HttpGet("DoesUserExist/{firebaseUserId}")]
         public IActionResult DoesUserExist(string firebaseUserId)
         {
@@ -49,7 +51,8 @@ namespace Wheelie.Controllers
             return Ok();
         }
 
-        // POST api/biker
+        // POST /biker
+        [Authorize]
         [HttpPost]
         public IActionResult Post(Biker biker)
         {
@@ -60,7 +63,8 @@ namespace Wheelie.Controllers
                 nameof(GetByFirebaseUserId), new { firebaseUserId = biker.FirebaseUserId }, biker);
         }
 
-        // PATCH api/bikers/{firebaseUserId}
+        // PATCH /bikers/{firebaseUserId}
+        [Authorize]
         [HttpPatch("{firebaseUserId}")]
         public IActionResult Patch(string firebaseUserId, Biker biker)
         {
@@ -82,7 +86,8 @@ namespace Wheelie.Controllers
             }
         }
 
-        // DELETE api/bikers/{firebaseUserId}
+        // DELETE /bikers/{firebaseUserId}
+        [Authorize]
         [HttpDelete("{firebaseUserId}")]
         public IActionResult Delete(string firebaseUserId)
         {
