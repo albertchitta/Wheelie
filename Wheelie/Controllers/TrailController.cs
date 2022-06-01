@@ -16,14 +16,21 @@ namespace Wheelie.Controllers
             _trailRepo = trailRepository;
         }
 
-        // GET: api/trails
+        // GET: trails
         [HttpGet]
         public List<Trail> Get()
         {
             return _trailRepo.GetAllTrails();
         }
 
-        // GET: api/trail/{id}
+        // GET: trails/biker{id}
+        [HttpGet("biker{id}")]
+        public List<Trail> GetTrailsByBikerId(int id)
+        {
+            return _trailRepo.GetTrailsByBikerId(id);
+        }
+
+        // GET: trails/{id}
         [HttpGet("{id}")]
         public IActionResult GetTrailById(int id)
         {
@@ -36,7 +43,7 @@ namespace Wheelie.Controllers
             return Ok(trail);
         }
 
-        // POST api/trail
+        // POST trails
         [HttpPost]
         public IActionResult Post(Trail trail)
         {
@@ -45,7 +52,7 @@ namespace Wheelie.Controllers
             return Ok(trail);
         }
 
-        // PATCH api/trails/{id}
+        // PATCH trails/{id}
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, Trail trail)
         {
@@ -67,7 +74,7 @@ namespace Wheelie.Controllers
             }
         }
 
-        // DELETE api/trails/{id}
+        // DELETE trails/{id}
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -10,13 +10,18 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
+import { getTrails } from '../api/data/TrailData';
+import TrailCard from '../components/TrailCard';
 
 function Copyright(props) {
   return (
@@ -81,10 +86,29 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const [value, setValue] = useState('trails');
+  const [trails, setTrails] = useState([]);
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    if (isMounted) {
+      getTrails().then(setTrails);
+    }
+
+    return () => {
+      isMounted = false;
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -157,21 +181,34 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <header>HOME</header>
-              </Grid>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <TabList onChange={handleChange} aria-label="lab API tabs example">
+                <Tab label="Trails" value="trails" />
+                <Tab label="Item Two" value="2" />
+                <Tab label="Item Three" value="3" />
+              </TabList>
+            </Box>
+            <TabPanel value="trails">
+            <Grid item xs={12} md={8} lg={9}>
+              {trails.length ? (
+                trails.map((trail) => (
+                  <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
+                ))
+              ) : (
+                <h1>No Trails</h1>
+              )}
             </Grid>
-            <Copyright sx={{ pt: 4 }} />
-          </Container>
+            </TabPanel>
+            <TabPanel value="2">Item Two</TabPanel>
+            <TabPanel value="3">Item Three</TabPanel>
+          </TabContext>
         </Box>
       </Box>
     </ThemeProvider>
   );
 }
 
-export default function Home() {
+export default function Explore() {
   return <DashboardContent />;
 }
