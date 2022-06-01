@@ -63,6 +63,51 @@ namespace Wheelie.Repositories
             }
         }
 
+        public List<Trail> GetTrailsByBikerId(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id,
+                                               BikerId,
+                                               ImageUrl,
+                                               [Name],
+                                               [Location],
+                                               Distance,
+                                               Grade
+                                        FROM Trail
+                                        WHERE BikerId = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    List<Trail> trails = new List<Trail>();
+                    while (reader.Read())
+                    {
+                        Trail trail = new Trail
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
+                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            Location = reader.GetString(reader.GetOrdinal("Location")),
+                            Distance = (double)reader.GetDecimal(reader.GetOrdinal("Distance")),
+                            Grade = reader.GetInt32(reader.GetOrdinal("Grade")),
+                        };
+
+                        trails.Add(trail);
+                    }
+
+                    reader.Close();
+
+                    Console.WriteLine(trails);
+                    return trails;
+                }
+            }
+        }
+
         public Trail GetTrailById(int id)
         {
             using (SqlConnection conn = Connection)
@@ -80,7 +125,7 @@ namespace Wheelie.Repositories
                                         FROM Trail
                                         WHERE Id = @id";
 
-                    cmd.Parameters.AddWithValue("@Id", id);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 

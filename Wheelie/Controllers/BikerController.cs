@@ -25,7 +25,6 @@ namespace Wheelie.Controllers
         }
 
         // GET: /bikers/{firebaseUserId}
-        [Authorize]
         [HttpGet("{firebaseUserId}")]
         public IActionResult GetByFirebaseUserId(string firebaseUserId)
         {

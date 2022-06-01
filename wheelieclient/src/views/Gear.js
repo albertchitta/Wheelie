@@ -161,7 +161,7 @@ function DashboardContent() {
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
-                <header>HOME</header>
+                <header>GEAR</header>
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
@@ -172,6 +172,6 @@ function DashboardContent() {
   );
 }
 
-export default function Home() {
+export default function Gear() {
   return <DashboardContent />;
 }

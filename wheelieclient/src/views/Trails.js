@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -17,6 +17,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
+import { getTrailsByBikerId } from '../api/data/TrailData';
+import TrailCard from '../components/TrailCard';
 
 function Copyright(props) {
   return (
@@ -80,11 +82,25 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
-  const [open, setOpen] = React.useState(true);
+function DashboardContent({ biker }) {
+  const [open, setOpen] = useState(true);
+  const [trails, setTrails] = useState([]);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    if (isMounted) {
+      getTrailsByBikerId(biker.id).then(setTrails);
+    }
+
+    return () => {
+      isMounted = false;
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -161,7 +177,14 @@ function DashboardContent() {
             <Grid container spacing={3}>
               {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
-                <header>HOME</header>
+                <header>TRAILS</header>
+                {trails.length ? (
+                  trails.map((trail) => (
+                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
+                  ))
+                ) : (
+                  <h1>No Trails</h1>
+                )}
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
@@ -172,6 +195,6 @@ function DashboardContent() {
   );
 }
 
-export default function Home() {
-  return <DashboardContent />;
+export default function Trails({ biker }) {
+  return <DashboardContent biker={biker} />;
 }
