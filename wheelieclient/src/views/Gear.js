@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -10,13 +10,20 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Button } from '@mui/material';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
+import { useNavigate } from 'react-router-dom';
+import Container from '@mui/material/Container';
+import { getBikesByBikerId } from '../api/data/BikeData';
 
 function Copyright(props) {
   return (
@@ -80,11 +87,39 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
-  const [open, setOpen] = React.useState(true);
+function DashboardContent({ biker }) {
+  const [open, setOpen] = useState(true);
+  const [value, setValue] = useState('bikes');
+  const [bikes, setBikes] = useState([]);
+  // const [helmets, setHelmets] = useState([]);
+  // const [clothings, setClothings] = useState([]);
+  const navigate = useNavigate();
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  const handleClick = (method) => {
+    if (method === 'create') {
+      navigate('/create-trail')
+    }
+  }
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    if (isMounted) {
+      // getTrails().then(setTrails);
+    }
+
+    return () => {
+      isMounted = false;
+    }
+  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -158,12 +193,28 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
+            <TabContext value={value}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <TabList onChange={handleChange} aria-label="lab API tabs example">
+                  <Tab label="Bikes" value="bikes" />
+                  <Tab label="Helmets" value="helmets" />
+                  <Tab label="Clothing" value="clothing" />
+                </TabList>
+              </Box>
+              <TabPanel value="bikes">
               <Grid item xs={12} md={8} lg={9}>
-                <header>GEAR</header>
+                {/* {trails.length ? (
+                  trails.map((trail) => (
+                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
+                  ))
+                ) : (
+                  <h1>No Trails</h1>
+                )} */}
               </Grid>
-            </Grid>
+              </TabPanel>
+              <TabPanel value="helmets">Item Two</TabPanel>
+              <TabPanel value="clothing">Item Three</TabPanel>
+            </TabContext>
             <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
@@ -172,6 +223,6 @@ function DashboardContent() {
   );
 }
 
-export default function Gear() {
-  return <DashboardContent />;
+export default function Gear({ biker }) {
+  return <DashboardContent biker={biker} />;
 }

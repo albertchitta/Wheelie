@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -11,28 +12,12 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-import { getTrailsByBikerId } from '../api/data/TrailData';
-import TrailCard from '../components/TrailCard';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
+import TrailForm from '../components/TrailForm';
+import { getTrail } from '../api/data/TrailData';
 
 const drawerWidth = 240;
 
@@ -82,25 +67,26 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent({ biker }) {
+function DashboardContent() {
   const [open, setOpen] = useState(true);
-  const [trails, setTrails] = useState([]);
+  const [editTrail, setEditTrail] = useState({});
+  const { firebaseUserId } = useParams();
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      getTrail(firebaseUserId).then(setEditTrail);
+    }
+
+    return() => {
+      isMounted = false;
+    };
+  }, [firebaseUserId]);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  useEffect(() => {
-    let isMounted = true;
-    
-    if (isMounted) {
-      getTrailsByBikerId(biker.id).then(setTrails);
-    }
-
-    return () => {
-      isMounted = false;
-    }
-  }, [biker.id]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -173,21 +159,21 @@ function DashboardContent({ biker }) {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              {/* Chart */}
-              <Grid item xs={12} md={8} lg={9}>
-                <header>TRAILS</header>
-                {trails.length ? (
-                  trails.map((trail) => (
-                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
-                  ))
-                ) : (
-                  <h1>No Trails</h1>
-                )}
-              </Grid>
-            </Grid>
-            <Copyright sx={{ pt: 4 }} />
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Typography component="h1" variant="h5">
+                Edit {editTrail.name}
+              </Typography>
+              <TrailForm trail={editTrail} />
+            </Box>
           </Container>
         </Box>
       </Box>
@@ -195,6 +181,6 @@ function DashboardContent({ biker }) {
   );
 }
 
-export default function Trails({ biker }) {
-  return <DashboardContent biker={biker} />;
+export default function EditTrail() {
+  return <DashboardContent />;
 }
