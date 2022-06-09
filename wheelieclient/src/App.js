@@ -19,8 +19,9 @@ function App() {
             getBiker(user.uid).then((biker) => {
                 if (biker.role === "admin") {
                     setIsAdmin(true);
-                    setBiker(biker);
                 }
+
+                setBiker(biker);
             });
         }
     });

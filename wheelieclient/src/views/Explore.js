@@ -19,9 +19,12 @@ import TabPanel from '@mui/lab/TabPanel';
 import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import { Button } from '@mui/material';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
 import { getTrails } from '../api/data/TrailData';
 import TrailCard from '../components/TrailCard';
+import { useNavigate } from 'react-router-dom';
+import Container from '@mui/material/Container';
 
 function Copyright(props) {
   return (
@@ -89,10 +92,17 @@ function DashboardContent() {
   const [open, setOpen] = useState(true);
   const [value, setValue] = useState('trails');
   const [trails, setTrails] = useState([]);
+  const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  const handleClick = (method) => {
+    if (method === 'create') {
+      navigate('/create-trail')
+    }
+  }
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -181,28 +191,32 @@ function DashboardContent() {
           }}
         >
           <Toolbar />
-          <TabContext value={value}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <TabList onChange={handleChange} aria-label="lab API tabs example">
-                <Tab label="Trails" value="trails" />
-                <Tab label="Item Two" value="2" />
-                <Tab label="Item Three" value="3" />
-              </TabList>
-            </Box>
-            <TabPanel value="trails">
-            <Grid item xs={12} md={8} lg={9}>
-              {trails.length ? (
-                trails.map((trail) => (
-                  <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
-                ))
-              ) : (
-                <h1>No Trails</h1>
-              )}
-            </Grid>
-            </TabPanel>
-            <TabPanel value="2">Item Two</TabPanel>
-            <TabPanel value="3">Item Three</TabPanel>
-          </TabContext>
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <TabContext value={value}>
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <TabList onChange={handleChange} aria-label="lab API tabs example">
+                  <Tab label="Trails" value="trails" />
+                  <Tab label="Item Two" value="2" />
+                  <Tab label="Item Three" value="3" />
+                </TabList>
+              </Box>
+              <TabPanel value="trails">
+              <Button onClick={() => handleClick('create')}>CREATE TRAIL</Button>
+              <Grid item xs={12} md={8} lg={9}>
+                {trails.length ? (
+                  trails.map((trail) => (
+                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
+                  ))
+                ) : (
+                  <h1>No Trails</h1>
+                )}
+              </Grid>
+              </TabPanel>
+              <TabPanel value="2">Item Two</TabPanel>
+              <TabPanel value="3">Item Three</TabPanel>
+            </TabContext>
+            <Copyright sx={{ pt: 4 }} />
+          </Container>
         </Box>
       </Box>
     </ThemeProvider>
