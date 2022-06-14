@@ -3,6 +3,7 @@ import { getToken } from '../authManager';
 
 const dbUrl = 'https://localhost:7108/trails';
 
+// Get all trails for explore page
 const getTrails = () => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -16,6 +17,7 @@ const getTrails = () => new Promise((resolve, reject) => {
     });
 });
 
+// Get trails for biker's trail page
 const getTrailsByBikerId = (bikerId) => new Promise((resolve, reject) => {
   return getToken().then((token) => {
       axios
@@ -29,6 +31,7 @@ const getTrailsByBikerId = (bikerId) => new Promise((resolve, reject) => {
   });
 });
 
+// Get trail info
 const getTrail = (firebaseUserId) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -42,6 +45,7 @@ const getTrail = (firebaseUserId) => new Promise((resolve, reject) => {
     });
 });
 
+// Create a new trail for explore page
 const createTrail = (trail) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -55,6 +59,7 @@ const createTrail = (trail) => new Promise((resolve, reject) => {
     });
 });
 
+// Update trail info
 const updateTrail = (trail) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -68,6 +73,7 @@ const updateTrail = (trail) => new Promise((resolve, reject) => {
     });
 });
 
+// Delete trail
 const deleteTrail = (trail) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
