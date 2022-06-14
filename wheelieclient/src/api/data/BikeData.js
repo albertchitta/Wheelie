@@ -16,6 +16,7 @@ const getBikes = () => new Promise((resolve, reject) => {
     });
 });
 
+// Get all bikes by bikerId
 const getBikesByBikerId = (bikerId) => new Promise((resolve, reject) => {
   return getToken().then((token) => {
       axios
@@ -29,6 +30,7 @@ const getBikesByBikerId = (bikerId) => new Promise((resolve, reject) => {
   });
 });
 
+// Get details on a bike
 const getBike = (id) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -42,6 +44,7 @@ const getBike = (id) => new Promise((resolve, reject) => {
     });
 });
 
+// Create a new bike
 const createBike = (bike) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -55,6 +58,7 @@ const createBike = (bike) => new Promise((resolve, reject) => {
     });
 });
 
+// Update bike info
 const updateBike = (bike) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -68,6 +72,7 @@ const updateBike = (bike) => new Promise((resolve, reject) => {
     });
 });
 
+// Delete bike
 const deleteBike = (bike) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios

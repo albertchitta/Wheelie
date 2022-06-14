@@ -3,6 +3,7 @@ import { getToken } from '../authManager';
 
 const dbUrl = 'https://localhost:7108/bikers';
 
+// Get all bikers
 const getBikers = () => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -16,6 +17,7 @@ const getBikers = () => new Promise((resolve, reject) => {
     });
 });
 
+// Get biker info for profile
 const getBiker = (firebaseUserId) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -29,6 +31,7 @@ const getBiker = (firebaseUserId) => new Promise((resolve, reject) => {
     });
 });
 
+// Create a new biker at register
 const createBiker = (biker) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -42,6 +45,7 @@ const createBiker = (biker) => new Promise((resolve, reject) => {
     });
 });
 
+// Update biker info in profile
 const updateBiker = (biker) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -55,6 +59,7 @@ const updateBiker = (biker) => new Promise((resolve, reject) => {
     });
 });
 
+// Delete biker only if logged in
 const deleteBiker = (biker) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
