@@ -165,6 +165,6 @@ function DashboardContent() {
   );
 }
 
-export default function EditTrail() {
+export default function CreateTrail() {
   return <DashboardContent />;
 }

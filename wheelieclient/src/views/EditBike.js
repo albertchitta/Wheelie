@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -10,35 +11,13 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
-import Link from '@mui/material/Link';
+import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
-import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
-import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { Button } from '@mui/material';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-import BikeCard from '../components/BikeCard';
-import { useNavigate } from 'react-router-dom';
-import Container from '@mui/material/Container';
-import { getBikesByBikerId } from '../api/data/BikeData';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
+import BikeForm from '../components/BikeForm';
+import { getBike } from '../api/data/BikeData';
 
 const drawerWidth = 240;
 
@@ -88,37 +67,26 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent({ biker }) {
+function DashboardContent() {
   const [open, setOpen] = useState(true);
-  const [value, setValue] = useState('bikes');
-  const [bikes, setBikes] = useState([]);
-  const navigate = useNavigate();
+  const [editBike, setEditBike] = useState({});
+  const { bikeId } = useParams();
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  useEffect(() => {
+    let isMounted = true;
 
-  const handleClick = (method) => {
-    if (method === 'add') {
-      navigate('/add-bike')
+    if (isMounted) {
+      getBike(bikeId).then(setEditBike);
     }
-  }
+
+    return() => {
+      isMounted = false;
+    };
+  }, [bikeId]);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  useEffect(() => {
-    let isMounted = true;
-    
-    if (isMounted) {
-      getBikesByBikerId(biker.id).then(setBikes);
-    }
-
-    return () => {
-      isMounted = false;
-    }
-  }, []);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -191,31 +159,21 @@ function DashboardContent({ biker }) {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <TabContext value={value}>
-              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <TabList onChange={handleChange} aria-label="lab API tabs example">
-                  <Tab label="Bikes" value="bikes" />
-                  <Tab label="Clothing" value="clothing" />
-                  <Tab label="Accessories" value="accessories" />
-                </TabList>
-              </Box>
-              <TabPanel value="bikes">
-              <Button onClick={() => handleClick('add')}>ADD BIKE</Button>
-              <Grid item xs={12} md={8} lg={9}>
-                {bikes.length ? (
-                  bikes.map((bike) => (
-                    <BikeCard key={bike.id} bike={bike} setBikes={setBikes} biker={biker} />
-                  ))
-                ) : (
-                  <h1>No Bikes</h1>
-                )}
-              </Grid>
-              </TabPanel>
-              <TabPanel value="2">Item Two</TabPanel>
-              <TabPanel value="3">Item Three</TabPanel>
-            </TabContext>
-            <Copyright sx={{ pt: 4 }} />
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <Typography component="h1" variant="h5">
+                Edit {editBike.brand}
+              </Typography>
+              <BikeForm bike={editBike} />
+            </Box>
           </Container>
         </Box>
       </Box>
@@ -223,6 +181,6 @@ function DashboardContent({ biker }) {
   );
 }
 
-export default function Gear({ biker }) {
-  return <DashboardContent biker={biker}/>;
+export default function EditBike() {
+  return <DashboardContent />;
 }

@@ -37,6 +37,7 @@ CREATE TABLE Biker (
 
 CREATE TABLE Bike (
 	Id INTEGER NOT NULL PRIMARY KEY IDENTITY,
+	BikerId INTEGER NOT NULL,
 	Brand VARCHAR(255) NOT NULL,
 	Color VARCHAR(255) NOT NULL,
 	Accessories VARCHAR(255) NOT NULL
@@ -83,22 +84,18 @@ INSERT INTO Biker (FirebaseUserId, [Role], [Name], Email, UserName, [Level], [Lo
 INSERT INTO Biker (FirebaseUserId, [Role], [Name], Email, UserName, [Level], [Location], ImageUrl, Rides, Distance) VALUES ('aer76gLnNyQLEWa2C57PlzfKbmS2', 'user', 'Test123', 'test123@gmail.com', 'test123', 'Intermediate', 'Nashville, TN', 'imageUrl', 6, 30);
 INSERT INTO Biker (FirebaseUserId, [Role], [Name], Email, UserName, [Level], [Location], ImageUrl, Rides, Distance) VALUES ('282DswOGLNedZg3JfHUTnM8lbnl1', 'user', 'Test456', 'test456@gmail.com', 'test456', 'Advanced', 'Atlanta, GA', 'imageUrl', 7, 40);
 
-INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUES (1, 'imageUrl', 'Buffalo Bayou Trail', 'Houston, TX', 17, 1);
+INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUES (0, 'imageUrl', 'Buffalo Bayou Trail', 'Houston, TX', 17, 1);
 INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUES (1, 'imageUrl', 'Greenway Trail', 'Murfreesboro, TN', 20, 1);
 INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUES (2, 'imageUrl', 'Hermann Park Trail', 'Houston, TX', 12, 1);
 
-INSERT INTO Bike (Brand, Color, Accessories) VALUES ('Trek Domane Al 2', 'Red', 'lights');
-INSERT INTO Bike (Brand, Color, Accessories) VALUES ('Trek Domane Al 3', 'Red', 'lights');
-INSERT INTO Bike (Brand, Color, Accessories) VALUES ('Trek Domane Al 4', 'Red', 'lights');
-
-INSERT INTO Helmet (Brand, Color) VALUES ('Giro Synthe', 'Black');
-INSERT INTO Helmet (Brand, Color) VALUES ('Giro Synthe', 'Red');
-INSERT INTO Helmet (Brand, Color) VALUES ('Giro Synthe', 'White');
+INSERT INTO Bike (BikerId, Brand, Color, Accessories) VALUES (0, 'Trek Domane Al 2', 'Red', 'lights');
+INSERT INTO Bike (BikerId, Brand, Color, Accessories) VALUES (0, 'Trek Domane Al 3', 'Red', 'lights');
+INSERT INTO Bike (BikerId, Brand, Color, Accessories) VALUES (0, 'Trek Domane Al 4', 'Red', 'lights');
 
 INSERT INTO Clothing (Jersey, Goggles, Shoes, Other) VALUES ('Jersey1', 'Goggles1', 'Shoes1', 'Other1');
 INSERT INTO Clothing (Jersey, Goggles, Shoes, Other) VALUES ('Jersey2', 'Goggles2', 'Shoes2', 'Other2');
 INSERT INTO Clothing (Jersey, Goggles, Shoes, Other) VALUES ('Jersey3', 'Goggles3', 'Shoes3', 'Other3');
 
-INSERT INTO GEAR (BikeId, HelmetId, ClothingId, BikerId) VALUES (1, 1, 1, 1);
-INSERT INTO GEAR (BikeId, HelmetId, ClothingId, BikerId) VALUES (2, 2, 2, 2);
-INSERT INTO GEAR (BikeId, HelmetId, ClothingId, BikerId) VALUES (3, 3, 3, 3);
+INSERT INTO GEAR (BikeId, ClothingId, BikerId) VALUES (1, 1, 1);
+INSERT INTO GEAR (BikeId, ClothingId, BikerId) VALUES (2, 2, 2);
+INSERT INTO GEAR (BikeId, ClothingId, BikerId) VALUES (3, 3, 3);

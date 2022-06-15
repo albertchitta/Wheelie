@@ -88,7 +88,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
   const [value, setValue] = useState('trails');
   const [trails, setTrails] = useState([]);
@@ -196,8 +196,7 @@ function DashboardContent() {
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <TabList onChange={handleChange} aria-label="lab API tabs example">
                   <Tab label="Trails" value="trails" />
-                  <Tab label="Item Two" value="2" />
-                  <Tab label="Item Three" value="3" />
+                  <Tab label="Bikers" value="bikers" />
                 </TabList>
               </Box>
               <TabPanel value="trails">
@@ -205,15 +204,13 @@ function DashboardContent() {
               <Grid item xs={12} md={8} lg={9}>
                 {trails.length ? (
                   trails.map((trail) => (
-                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
+                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} biker={biker} />
                   ))
                 ) : (
                   <h1>No Trails</h1>
                 )}
               </Grid>
               </TabPanel>
-              <TabPanel value="2">Item Two</TabPanel>
-              <TabPanel value="3">Item Three</TabPanel>
             </TabContext>
             <Copyright sx={{ pt: 4 }} />
           </Container>
@@ -223,6 +220,6 @@ function DashboardContent() {
   );
 }
 
-export default function Explore() {
-  return <DashboardContent />;
+export default function Explore({ biker }) {
+  return <DashboardContent biker={biker} />;
 }

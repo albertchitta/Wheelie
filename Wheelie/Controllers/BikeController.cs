@@ -15,14 +15,22 @@ namespace Wheelie.Controllers
         {
             _bikeRepo = bikeRepository;
         }
-        // GET: api/bikes
+
+        // GET: bikes
         [HttpGet]
         public List<Bike> Get()
         {
             return _bikeRepo.GetAllBikes();
         }
 
-        // GET: api/bikes/{id}
+        // GET: bikes/biker{id}
+        [HttpGet("biker{id}")]
+        public List<Bike> GetBikesByBikerId(int id)
+        {
+            return _bikeRepo.GetBikesByBikerId(id);
+        }
+
+        // GET: bikes/{id}
         [HttpGet("{id}")]
         public IActionResult GetBikeById(int id)
         {
@@ -35,7 +43,7 @@ namespace Wheelie.Controllers
             return Ok(bike);
         }
 
-        // POST api/bike
+        // POST /bike
         [HttpPost]
         public IActionResult Post(Bike bike)
         {
@@ -44,7 +52,7 @@ namespace Wheelie.Controllers
             return Ok(bike);
         }
 
-        // PATCH api/bikes/{id}
+        // PATCH bikes/{id}
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, Bike bike)
         {
@@ -66,7 +74,7 @@ namespace Wheelie.Controllers
             }
         }
 
-        // DELETE api/bikes/{id}
+        // DELETE bikes/{id}
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
