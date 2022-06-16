@@ -9,7 +9,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tab from '@mui/material/Tab';
@@ -18,11 +17,10 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Button } from '@mui/material';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
 import { getTrails } from '../api/data/TrailData';
-import TrailCard from '../components/TrailCard';
+import ExploreTrailCard from '../components/ExploreTrailCard';
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 
@@ -151,11 +149,6 @@ function DashboardContent({ biker }) {
             >
               Wheelie
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -204,7 +197,7 @@ function DashboardContent({ biker }) {
               <Grid item xs={12} md={8} lg={9}>
                 {trails.length ? (
                   trails.map((trail) => (
-                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} biker={biker} />
+                      trail.bikerId === 0 ? <ExploreTrailCard key={trail.id} trail={trail} setTrails={setTrails} biker={biker} /> : ''
                   ))
                 ) : (
                   <h1>No Trails</h1>

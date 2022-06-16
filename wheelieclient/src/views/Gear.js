@@ -9,7 +9,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tab from '@mui/material/Tab';
@@ -18,7 +17,6 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Button } from '@mui/material';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
 import BikeCard from '../components/BikeCard';
@@ -92,6 +90,7 @@ function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
   const [value, setValue] = useState('bikes');
   const [bikes, setBikes] = useState([]);
+  const [clothings, setClothings] = useState([]);
   const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
@@ -151,11 +150,6 @@ function DashboardContent({ biker }) {
             >
               Wheelie
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -197,22 +191,32 @@ function DashboardContent({ biker }) {
                 <TabList onChange={handleChange} aria-label="lab API tabs example">
                   <Tab label="Bikes" value="bikes" />
                   <Tab label="Clothing" value="clothing" />
-                  <Tab label="Accessories" value="accessories" />
+                  <Tab label="Other" value="other" />
                 </TabList>
               </Box>
               <TabPanel value="bikes">
               <Button onClick={() => handleClick('add')}>ADD BIKE</Button>
-              <Grid item xs={12} md={8} lg={9}>
-                {bikes.length ? (
-                  bikes.map((bike) => (
-                    <BikeCard key={bike.id} bike={bike} setBikes={setBikes} biker={biker} />
-                  ))
-                ) : (
-                  <h1>No Bikes</h1>
-                )}
-              </Grid>
+                <Grid item xs={12} md={8} lg={9}>
+                  {bikes.length ? (
+                    bikes.map((bike) => (
+                      <BikeCard key={bike.id} bike={bike} setBikes={setBikes} biker={biker} />
+                    ))
+                  ) : (
+                    <h1>No Bikes</h1>
+                  )}
+                </Grid>
               </TabPanel>
-              <TabPanel value="2">Item Two</TabPanel>
+              <TabPanel value="clothing">
+                <Grid item xs={12} md={8} lg={9}>
+                  {clothings.length ? (
+                    clothings.map((clothing) => (
+                      <BikeCard key={clothing.id} clothing={clothing} setClothings={setClothings} biker={biker} />
+                    ))
+                  ) : (
+                    <h1>No Bikes</h1>
+                  )}
+                </Grid>
+              </TabPanel>
               <TabPanel value="3">Item Three</TabPanel>
             </TabContext>
             <Copyright sx={{ pt: 4 }} />

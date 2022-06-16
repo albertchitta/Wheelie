@@ -7,22 +7,24 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { deleteTrail } from '../api/data/TrailData';
+import { createTrail, deleteTrail } from '../api/data/TrailData';
 import { useNavigate } from 'react-router-dom';
 
-export default function TrailCard({ trail, setTrails, biker }) {
+export default function ExploreTrailCard({ trail, setTrails, biker }) {
   const navigate = useNavigate();
 
   const handleClick = (method) => {
-    if (method === 'remove') {
-      const del = confirm(`Are you sure you want to remove ${trail.name} from your trails?`);
+    if (method === 'delete') {
+      const del = confirm(`Are you sure you want to delete ${trail.name}?`);
 
       if (del) {
         deleteTrail(trail).then(setTrails);
-        navigate('/trails');
       }
-    } else {
-        navigate(`/edit-trail/${trail.id}`);
+    } else if (method === 'edit') {
+        navigate(`/edit-trail/${trail.id}`)
+    } else if (method === 'add') {
+      trail.bikerId = biker.id;
+      createTrail(trail).then(setTrails);
     }
   }
 
@@ -47,14 +49,15 @@ export default function TrailCard({ trail, setTrails, biker }) {
         </Typography>
       </CardContent>
       <CardActions>
+        <Button size="small" onClick={() => handleClick('add')}>Add</Button>
         <Button size="small" onClick={() => handleClick('edit')}>Edit</Button>
-        <Button size="small" onClick={() => handleClick('remove')}>Remove</Button>
+        <Button size="small" onClick={() => handleClick('delete')}>Remove</Button>
       </CardActions>
     </Card>
   );
 }
 
-TrailCard.propTypes = {
+ExploreTrailCard.propTypes = {
   trail: PropTypes.shape({
     bikerId: PropTypes.number,
     imageUrl: PropTypes.string,

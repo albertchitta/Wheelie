@@ -88,9 +88,9 @@ INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUE
 INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUES (1, 'imageUrl', 'Greenway Trail', 'Murfreesboro, TN', 20, 1);
 INSERT INTO Trail (BikerId, ImageUrl, [Name], [Location], Distance, Grade) VALUES (2, 'imageUrl', 'Hermann Park Trail', 'Houston, TX', 12, 1);
 
-INSERT INTO Bike (BikerId, Brand, Color, Accessories) VALUES (0, 'Trek Domane Al 2', 'Red', 'lights');
-INSERT INTO Bike (BikerId, Brand, Color, Accessories) VALUES (0, 'Trek Domane Al 3', 'Red', 'lights');
-INSERT INTO Bike (BikerId, Brand, Color, Accessories) VALUES (0, 'Trek Domane Al 4', 'Red', 'lights');
+INSERT INTO Bike (BikerId, Brand, Color, Accessories) VALUES (1, 'Trek Domane Al 2', 'Red', 'lights');
+INSERT INTO Bike (BikerId, Brand, Color, Accessories) VALUES (1, 'Trek Domane Al 3', 'Red', 'lights');
+INSERT INTO Bike (BikerId, Brand, Color, Accessories) VALUES (2, 'Trek Domane Al 4', 'Red', 'lights');
 
 INSERT INTO Clothing (Jersey, Goggles, Shoes, Other) VALUES ('Jersey1', 'Goggles1', 'Shoes1', 'Other1');
 INSERT INTO Clothing (Jersey, Goggles, Shoes, Other) VALUES ('Jersey2', 'Goggles2', 'Shoes2', 'Other2');
