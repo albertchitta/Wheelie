@@ -30,6 +30,7 @@ namespace Wheelie.Repositories
                 {
                     cmd.CommandText = @"SELECT Id,
                                                BikerId,
+                                               ImageUrl,
                                                Brand,
                                                Color,
                                                Accessories
@@ -43,6 +44,7 @@ namespace Wheelie.Repositories
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
+                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             Brand = reader.GetString(reader.GetOrdinal("Brand")),
                             Color = reader.GetString(reader.GetOrdinal("Color")),
                             Accessories = reader.GetString(reader.GetOrdinal("Accessories"))
@@ -68,6 +70,7 @@ namespace Wheelie.Repositories
                 {
                     cmd.CommandText = @"SELECT Id,
                                                BikerId,
+                                               ImageUrl,
                                                Brand,
                                                Color,
                                                Accessories
@@ -84,6 +87,7 @@ namespace Wheelie.Repositories
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
+                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             Brand = reader.GetString(reader.GetOrdinal("Brand")),
                             Color = reader.GetString(reader.GetOrdinal("Color")),
                             Accessories = reader.GetString(reader.GetOrdinal("Accessories"))
@@ -109,6 +113,7 @@ namespace Wheelie.Repositories
                 {
                     cmd.CommandText = @"SELECT Id,
                                                BikerId,
+                                               ImageUrl,
                                                Brand,
                                                Color,
                                                Accessories
@@ -125,6 +130,7 @@ namespace Wheelie.Repositories
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
+                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             Brand = reader.GetString(reader.GetOrdinal("Brand")),
                             Color = reader.GetString(reader.GetOrdinal("Color")),
                             Accessories = reader.GetString(reader.GetOrdinal("Accessories"))
@@ -150,13 +156,15 @@ namespace Wheelie.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"INSERT INTO Bike (BikerId,
+                                                          ImageUrl,
                                                           Brand,
                                                           Color,
                                                           Accessories)
                                         OUTPUT INSERTED.ID
-                                        VALUES (@bikerId, @brand, @color, @accessories);";
+                                        VALUES (@bikerId, @imageUrl, @brand, @color, @accessories);";
 
                     cmd.Parameters.AddWithValue("@bikerId", bike.BikerId);
+                    cmd.Parameters.AddWithValue("@imageUrl", bike.ImageUrl);
                     cmd.Parameters.AddWithValue("@brand", bike.Brand);
                     cmd.Parameters.AddWithValue("@color", bike.Color);
                     cmd.Parameters.AddWithValue("@accessories", bike.Accessories);
@@ -178,6 +186,7 @@ namespace Wheelie.Repositories
                 {
                     cmd.CommandText = @"UPDATE Bike
                                         SET BikerId = @bikerId,
+                                            ImageUrl = @imageUrl,
                                             Brand = @brand,
                                             Color = @color,
                                             Accessories = @accessories
@@ -185,6 +194,7 @@ namespace Wheelie.Repositories
 
                     cmd.Parameters.AddWithValue("@id", bike.Id);
                     cmd.Parameters.AddWithValue("@bikerId", bike.BikerId);
+                    cmd.Parameters.AddWithValue("@imageUrl", bike.ImageUrl);
                     cmd.Parameters.AddWithValue("@brand", bike.Brand);
                     cmd.Parameters.AddWithValue("@color", bike.Color);
                     cmd.Parameters.AddWithValue("@accessories", bike.Accessories);

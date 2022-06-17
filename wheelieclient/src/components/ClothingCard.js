@@ -7,20 +7,21 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
-import { deleteBike } from '../api/data/BikeData';
+import { deleteClothing } from '../api/data/ClothingData';
 
-export default function ClothingCard({ bike, setBikes, biker }) {
+export default function ClothingCard({ clothing, clothings, setClothings, biker }) {
   const navigate = useNavigate();
+  const set = clothings.indexOf(clothing) + 1;
 
   const handleClick = (method) => {
     if (method === 'delete') {
-      const del = confirm(`Are you sure you want to delete ${bike.brand}?`);
+      const del = confirm(`Are you sure you want to delete Clothing Set #${set}?`);
 
       if (del) {
-        deleteBike(bike).then(setBikes);
+        deleteClothing(clothing).then(setClothings);
+      } else {
+        navigate(`/edit-clothing/${clothing.id}`)
       }
-    } else {
-        navigate(`/edit-bike/${bike.id}`)
     }
   }
 
@@ -28,12 +29,18 @@ export default function ClothingCard({ bike, setBikes, biker }) {
     <Card sx={{ maxWidth: 345 }}>
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          {bike.brand}
+          Clothing Set #{set}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Color: {bike.color}
+          Jersey: {clothing.jersey}
           <br />
-          Accessories: {bike.accessories}
+          Sunglasses: {clothing.goggles}
+          <br />
+          Shoes: {clothing.shoes}
+          <br />
+          Helmet: {clothing.helmet}
+          <br />
+          Other: {clothing.other}
         </Typography>
       </CardContent>
       <CardActions>
@@ -46,9 +53,11 @@ export default function ClothingCard({ bike, setBikes, biker }) {
 
 ClothingCard.propTypes = {
   clothing: PropTypes.shape({
+    bikerId: PropTypes.number,
     jersey: PropTypes.string,
     goggles: PropTypes.string,
     shoes: PropTypes.string,
+    helmet: PropTypes.string,
     other: PropTypes.string,
   }).isRequired
 }

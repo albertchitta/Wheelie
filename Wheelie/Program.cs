@@ -40,7 +40,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IBikerRepository, BikerRepository>();
 builder.Services.AddTransient<IBikeRepository, BikeRepository>();
 builder.Services.AddTransient<IClothingRepository, ClothingRepository>();
-builder.Services.AddTransient<IGearRepository, GearRepository>();
 builder.Services.AddTransient<ITrailRepository, TrailRepository>();
 
 var app = builder.Build();

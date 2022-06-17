@@ -15,6 +15,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { createTrail, updateTrail } from '../api/data/TrailData';
 
 const initialState = {
+  bikerId: 0,
   name: '',
   imageUrl: '',
   location: '',
@@ -49,6 +50,7 @@ function DashboardContent({ trail }) {
       if (trail.id) {
         setFormInput({
           id: trail.id,
+          bikerId: trail.bikerId,
           name: trail.name,
           imageUrl: trail.imageUrl,
           location: trail.location,
@@ -80,7 +82,7 @@ function DashboardContent({ trail }) {
     if(trail.id) {
       updateTrail(formInput).then(() => {
         resetForm();
-        navigate('/explore');
+        navigate('/trails');
       });
     } else {
         createTrail(formInput).then(() => {
@@ -166,6 +168,9 @@ function DashboardContent({ trail }) {
                       fullWidth
                       label="Grade"
                       id="grade"
+                      InputProps={{
+                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                      }}
                       value={formInput.grade || ''}
                       onChange={handleChange}
                     />

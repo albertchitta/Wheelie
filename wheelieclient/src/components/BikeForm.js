@@ -14,6 +14,7 @@ import Button from '@mui/material/Button';
 import { createBike, updateBike } from '../api/data/BikeData';
 
 const initialState = {
+  imageUrl: '',
   brand: '',
   color: '',
   accessories: ''
@@ -41,12 +42,14 @@ function DashboardContent({ bike, biker }) {
 
   useEffect(() => {
     let isMounted = true;
+    console.warn(bike);
 
     if (isMounted) {
       if (bike.id) {
         setFormInput({
           id: bike.id,
           bikerId: bike.bikerId,
+          imageUrl: bike.imageUrl,
           brand: bike.brand,
           color: bike.color,
           accessories: bike.accessories,
@@ -57,7 +60,7 @@ function DashboardContent({ bike, biker }) {
     return() => {
       isMounted = false;
     }
-  }, []);
+  }, [bike]);
 
   const resetForm = () => {
     setFormInput(initialState);
@@ -111,6 +114,17 @@ function DashboardContent({ bike, biker }) {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
+                      required
+                      fullWidth
+                      id="imageUrl"
+                      label="Image Url"
+                      name="imageUrl"
+                      value={formInput.imageUrl || ''}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
                       name="brand"
                       required
                       fullWidth
@@ -160,7 +174,7 @@ function DashboardContent({ bike, biker }) {
   );
 }
 
-export default function BikeForm({ bike = {}, biker}) {
+export default function BikeForm({ bike = {}, biker }) {
   return <DashboardContent bike={bike} biker={biker} />;
 }
 

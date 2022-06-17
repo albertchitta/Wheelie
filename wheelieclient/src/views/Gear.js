@@ -23,6 +23,8 @@ import BikeCard from '../components/BikeCard';
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import { getBikesByBikerId } from '../api/data/BikeData';
+import { getClothingsByBikerId } from '../api/data/ClothingData';
+import ClothingCard from '../components/ClothingCard';
 
 function Copyright(props) {
   return (
@@ -98,8 +100,10 @@ function DashboardContent({ biker }) {
   };
 
   const handleClick = (method) => {
-    if (method === 'add') {
+    if (method === 'addBike') {
       navigate('/add-bike')
+    } else {
+      navigate('/add-clothing')
     }
   }
 
@@ -112,12 +116,13 @@ function DashboardContent({ biker }) {
     
     if (isMounted) {
       getBikesByBikerId(biker.id).then(setBikes);
+      getClothingsByBikerId(biker.id).then(setClothings);
     }
 
     return () => {
       isMounted = false;
     }
-  }, []);
+  }, [biker.id]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -191,11 +196,10 @@ function DashboardContent({ biker }) {
                 <TabList onChange={handleChange} aria-label="lab API tabs example">
                   <Tab label="Bikes" value="bikes" />
                   <Tab label="Clothing" value="clothing" />
-                  <Tab label="Other" value="other" />
                 </TabList>
               </Box>
               <TabPanel value="bikes">
-              <Button onClick={() => handleClick('add')}>ADD BIKE</Button>
+              <Button onClick={() => handleClick('addBike')}>ADD BIKE</Button>
                 <Grid item xs={12} md={8} lg={9}>
                   {bikes.length ? (
                     bikes.map((bike) => (
@@ -207,17 +211,17 @@ function DashboardContent({ biker }) {
                 </Grid>
               </TabPanel>
               <TabPanel value="clothing">
+              <Button onClick={() => handleClick('addClothing')}>ADD CLOTHING SET</Button>
                 <Grid item xs={12} md={8} lg={9}>
                   {clothings.length ? (
                     clothings.map((clothing) => (
-                      <BikeCard key={clothing.id} clothing={clothing} setClothings={setClothings} biker={biker} />
+                      <ClothingCard key={clothing.id} clothing={clothing} clothings={clothings} setClothings={setClothings} biker={biker} />
                     ))
                   ) : (
-                    <h1>No Bikes</h1>
+                    <h1>No Clothing Set</h1>
                   )}
                 </Grid>
               </TabPanel>
-              <TabPanel value="3">Item Three</TabPanel>
             </TabContext>
             <Copyright sx={{ pt: 4 }} />
           </Container>

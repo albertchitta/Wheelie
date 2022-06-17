@@ -67,7 +67,7 @@ const updateBike = (bike) => new Promise((resolve, reject) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then(() => getBikes().then(resolve))
+        .then(() => getBikesByBikerId(bike.bikerId).then(resolve))
         .catch(reject);
     });
 });
@@ -81,7 +81,7 @@ const deleteBike = (bike) => new Promise((resolve, reject) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then(() => getBikes().then(resolve))
+        .then(() => getBikesByBikerId(bike.bikerId).then(resolve))
         .catch(reject);
     });
 });

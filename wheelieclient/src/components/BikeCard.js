@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
@@ -26,6 +27,12 @@ export default function BikeCard({ bike, setBikes, biker }) {
 
   return (
     <Card sx={{ maxWidth: 345 }}>
+      <CardMedia
+        component="img"
+        height="140"
+        image={bike.imageUrl}
+        alt={bike.brand}
+      />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {bike.brand}

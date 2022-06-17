@@ -16,6 +16,7 @@ export default function ExploreTrailCard({ trail, setTrails, biker }) {
   const handleClick = (method) => {
     if (method === 'delete') {
       const del = confirm(`Are you sure you want to delete ${trail.name}?`);
+      console.warn(biker);
 
       if (del) {
         deleteTrail(trail).then(setTrails);
@@ -50,8 +51,14 @@ export default function ExploreTrailCard({ trail, setTrails, biker }) {
       </CardContent>
       <CardActions>
         <Button size="small" onClick={() => handleClick('add')}>Add</Button>
-        <Button size="small" onClick={() => handleClick('edit')}>Edit</Button>
-        <Button size="small" onClick={() => handleClick('delete')}>Remove</Button>
+        {biker.role === 'admin' ? (
+          <>
+            <Button size="small" onClick={() => handleClick('edit')}>Edit</Button>
+            <Button size="small" onClick={() => handleClick('delete')}>Remove</Button>
+          </>
+        ) : (
+          ''
+        )}
       </CardActions>
     </Card>
   );
