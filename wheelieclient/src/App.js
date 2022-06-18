@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { onLoginStatusChange } from "./api/authManager";
 import PublicRoutes from "./routes/PublicRoutes";
 import { getBiker } from "./api/data/BikerData";
 import { Spinner } from 'reactstrap';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -13,17 +14,16 @@ function App() {
   useEffect(() => {
     onLoginStatusChange(setIsLoggedIn);
 
-    const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            getBiker(user.uid).then((biker) => {
-                if (biker.role === "admin") {
-                    setIsAdmin(true);
-                }
+    firebase.auth().onAuthStateChanged((authed) => {
+      if (authed) {
+        getBiker(authed.uid).then((biker) => {
+          if (biker.role === "admin") {
+            setIsAdmin(true);
+          }
 
-                setBiker(biker);
-            });
-        }
+          setBiker(biker);
+        });
+      }
     });
   }, []);
 

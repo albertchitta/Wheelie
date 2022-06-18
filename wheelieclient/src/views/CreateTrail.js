@@ -65,7 +65,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
 
   const toggleDrawer = () => {
@@ -101,7 +101,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Wheelie
+              Create Trail
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -153,9 +153,6 @@ function DashboardContent() {
                 alignItems: 'center',
               }}
             >
-              <Typography component="h1" variant="h5">
-                CREATE A TRAIL
-              </Typography>
               <TrailForm trail={{}} />
             </Box>
           </Container>

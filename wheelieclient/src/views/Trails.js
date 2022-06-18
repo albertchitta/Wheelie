@@ -129,7 +129,7 @@ function DashboardContent({ biker }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Wheelie
+              Trails
             </Typography>
           </Toolbar>
         </AppBar>

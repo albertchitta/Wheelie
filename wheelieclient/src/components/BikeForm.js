@@ -42,7 +42,6 @@ function DashboardContent({ bike, biker }) {
 
   useEffect(() => {
     let isMounted = true;
-    console.warn(bike);
 
     if (isMounted) {
       if (bike.id) {

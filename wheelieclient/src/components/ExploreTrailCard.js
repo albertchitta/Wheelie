@@ -16,7 +16,6 @@ export default function ExploreTrailCard({ trail, setTrails, biker }) {
   const handleClick = (method) => {
     if (method === 'delete') {
       const del = confirm(`Are you sure you want to delete ${trail.name}?`);
-      console.warn(biker);
 
       if (del) {
         deleteTrail(trail).then(setTrails);
@@ -24,8 +23,8 @@ export default function ExploreTrailCard({ trail, setTrails, biker }) {
     } else if (method === 'edit') {
         navigate(`/edit-trail/${trail.id}`)
     } else if (method === 'add') {
-      trail.bikerId = biker.id;
-      createTrail(trail).then(setTrails);
+        trail.bikerId = biker.id;
+        createTrail(trail).then(setTrails);
     }
   }
 

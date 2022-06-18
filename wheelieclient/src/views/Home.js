@@ -14,6 +14,7 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import Title from '../components/Title';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
 
 function Copyright(props) {
@@ -78,7 +79,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+function DashboardContent({ biker }) {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -113,7 +114,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Wheelie
+              Home
             </Typography>
           </Toolbar>
         </AppBar>
@@ -151,10 +152,39 @@ function DashboardContent() {
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            <h1>WHEELIE</h1>
+            <h2>{biker.name}</h2>
+            <h4>{biker.userName}</h4>
             <Grid container spacing={3}>
-              {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
-                <header>HOME</header>
+                <Title>Location</Title>
+                <Typography component="p" variant="h4">
+                  {biker.location}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={8} lg={9}>
+                <Title>Level</Title>
+                <Typography component="p" variant="h4">
+                  {biker.level}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={8} lg={9}>
+                <Title>Rides</Title>
+                <Typography component="p" variant="h4">
+                  {biker.rides}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={8} lg={9}>
+                <Title>Distance</Title>
+                <Typography component="p" variant="h4">
+                  {biker.distance}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={8} lg={9}>
+                <Title>Total Biking Distance</Title>
+                <Typography component="p" variant="h4">
+                  12345 miles
+                </Typography>
               </Grid>
             </Grid>
             <Copyright sx={{ pt: 4 }} />
@@ -165,6 +195,6 @@ function DashboardContent() {
   );
 }
 
-export default function Home() {
-  return <DashboardContent />;
+export default function Home({ biker }) {
+  return <DashboardContent biker={biker} />;
 }

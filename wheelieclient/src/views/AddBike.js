@@ -101,7 +101,7 @@ function DashboardContent({ biker }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Wheelie
+              Add Bike
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -153,9 +153,6 @@ function DashboardContent({ biker }) {
                 alignItems: 'center',
               }}
             >
-              <Typography component="h1" variant="h5">
-                ADD A BIKE
-              </Typography>
               <BikeForm bike={{}} biker={biker} />
             </Box>
           </Container>

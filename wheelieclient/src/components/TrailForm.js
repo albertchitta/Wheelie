@@ -43,6 +43,7 @@ function DashboardContent({ trail }) {
   const [formInput, setFormInput] = useState(initialState);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     let isMounted = true;
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -19,10 +20,13 @@ import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { Button } from '@mui/material';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-import { getTrails } from '../api/data/TrailData';
+import { getTrailsByBikerId } from '../api/data/TrailData';
 import ExploreTrailCard from '../components/ExploreTrailCard';
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
 
 function Copyright(props) {
   return (
@@ -86,10 +90,15 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
+const initialState = {
+  trail: ''
+}
+
 function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
   const [value, setValue] = useState('trails');
   const [trails, setTrails] = useState([]);
+  const [input, setInput] = useState(initialState);
   const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
@@ -110,13 +119,36 @@ function DashboardContent({ biker }) {
     let isMounted = true;
     
     if (isMounted) {
-      getTrails().then(setTrails);
+      getTrailsByBikerId(0).then(setTrails);
     }
 
     return () => {
       isMounted = false;
     }
   }, []);
+
+  const handleSearch = (e) => {
+    setInput((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const filter = input.trail.toLowerCase();
+
+    if (filter === '') {
+      getTrailsByBikerId(0).then(setTrails);
+    }
+
+    const filteredTrails = trails.filter((trail) => {
+      return (trail.name.toLowerCase().includes(filter))
+    });
+
+    setTrails(filteredTrails);
+  };
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -147,7 +179,7 @@ function DashboardContent({ biker }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Wheelie
+              Explore
             </Typography>
           </Toolbar>
         </AppBar>
@@ -194,6 +226,24 @@ function DashboardContent({ biker }) {
               </Box>
               <TabPanel value="trails">
               <Button onClick={() => handleClick('create')}>CREATE TRAIL</Button>
+              <Paper
+                component="form"
+                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', maxWidth: 400 }}
+                onSubmit={handleSubmit}
+              >
+                <InputBase
+                  sx={{ ml: 1, flex: 1 }}
+                  placeholder="Search Bike Trails"
+                  inputProps={{ 'aria-label': 'search bike trails' }}
+                  name="trail"
+                  id="trail"
+                  value={input.trail || ''}
+                  onChange={handleSearch}
+                />
+                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                  <SearchIcon />
+                </IconButton>
+              </Paper>
               <Grid item xs={12} md={8} lg={9}>
                 {trails.length ? (
                   trails.map((trail) => (
@@ -215,4 +265,16 @@ function DashboardContent({ biker }) {
 
 export default function Explore({ biker }) {
   return <DashboardContent biker={biker} />;
+}
+
+Explore.propTypes = {
+  input: PropTypes.shape({
+    trail: PropTypes.string
+  })
+}
+
+Explore.defaultProps = {
+  input: {
+    trail: ''
+  }
 }

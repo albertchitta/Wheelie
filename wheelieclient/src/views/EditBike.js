@@ -117,7 +117,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Wheelie
+              Edit Bike: {editBike.brand}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -169,9 +169,6 @@ function DashboardContent() {
                 alignItems: 'center',
               }}
             >
-              <Typography component="h1" variant="h5">
-                Edit {editBike.brand}
-              </Typography>
               <BikeForm bike={editBike} />
             </Box>
           </Container>
