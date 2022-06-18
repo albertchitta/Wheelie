@@ -11,16 +11,13 @@ import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import InputAdornment from '@mui/material/InputAdornment';
-import { createTrail, updateTrail } from '../api/data/TrailData';
+import { createBike, updateBike } from '../api/data/BikeData';
 
 const initialState = {
-  bikerId: 0,
-  name: '',
   imageUrl: '',
-  location: '',
-  distance: '',
-  grade: ''
+  brand: '',
+  color: '',
+  accessories: ''
 };
 
 function Copyright(props) {
@@ -39,24 +36,22 @@ function Copyright(props) {
 
 const mdTheme = createTheme();
 
-function DashboardContent({ trail }) {
+function DashboardContent({ bike, biker }) {
   const [formInput, setFormInput] = useState(initialState);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     let isMounted = true;
 
     if (isMounted) {
-      if (trail.id) {
+      if (bike.id) {
         setFormInput({
-          id: trail.id,
-          bikerId: trail.bikerId,
-          name: trail.name,
-          imageUrl: trail.imageUrl,
-          location: trail.location,
-          distance: trail.distance,
-          grade: trail.grade
+          id: bike.id,
+          bikerId: bike.bikerId,
+          imageUrl: bike.imageUrl,
+          brand: bike.brand,
+          color: bike.color,
+          accessories: bike.accessories,
         });
       }
     }
@@ -64,7 +59,7 @@ function DashboardContent({ trail }) {
     return() => {
       isMounted = false;
     }
-  }, [trail]);
+  }, [bike]);
 
   const resetForm = () => {
     setFormInput(initialState);
@@ -80,15 +75,16 @@ function DashboardContent({ trail }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(trail.id) {
-      updateTrail(formInput).then(() => {
+    if(bike.id) {
+      updateBike(formInput).then(() => {
         resetForm();
-        navigate('/trails');
+        navigate('/gear');
       });
     } else {
-        createTrail(formInput).then(() => {
+        formInput.bikerId = biker.id;
+        createBike(formInput).then(() => {
           resetForm();
-          navigate('/explore');
+          navigate('/gear');
         });
     }
   };
@@ -117,17 +113,6 @@ function DashboardContent({ trail }) {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
-                      name="name"
-                      required
-                      fullWidth
-                      id="name"
-                      label="Trail Name"
-                      value={formInput.name || ''}
-                      onChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
                       required
                       fullWidth
                       id="imageUrl"
@@ -139,40 +124,34 @@ function DashboardContent({ trail }) {
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
+                      name="brand"
                       required
                       fullWidth
-                      name="location"
-                      label="Location"
-                      id="location"
-                      value={formInput.location || ''}
+                      id="brand"
+                      label="Brand Name"
+                      value={formInput.brand || ''}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      name="distance"
                       required
                       fullWidth
-                      id="distance"
-                      label="Distance Traveled"
-                      InputProps={{
-                        endAdornment: <InputAdornment position="end">mi</InputAdornment>,
-                      }}
-                      value={formInput.distance || ''}
+                      name="color"
+                      label="Color"
+                      id="color"
+                      value={formInput.color || ''}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      name="grade"
+                      name="accessories"
                       required
                       fullWidth
-                      label="Grade"
-                      id="grade"
-                      InputProps={{
-                        endAdornment: <InputAdornment position="end">%</InputAdornment>,
-                      }}
-                      value={formInput.grade || ''}
+                      id="accessories"
+                      label="Accessories"
+                      value={formInput.accessories || ''}
                       onChange={handleChange}
                     />
                   </Grid>
@@ -183,7 +162,7 @@ function DashboardContent({ trail }) {
                   sx={{ mt: 3, mb: 2 }}
                   onClick={handleSubmit}
                 >
-                  {trail.id ? 'Update' : 'Create'}
+                  {bike.id ? 'Update' : 'Create'}
                 </Button>
               </Box>
             <Copyright sx={{ mt: 5 }} />
@@ -194,10 +173,10 @@ function DashboardContent({ trail }) {
   );
 }
 
-export default function TrailForm({ trail = {} }) {
-  return <DashboardContent trail={trail} />;
+export default function BikeForm({ bike = {}, biker }) {
+  return <DashboardContent bike={bike} biker={biker} />;
 }
 
-TrailForm.propTypes = {
-  trail: PropTypes.shape({}).isRequired
+BikeForm.propTypes = {
+  bike: PropTypes.shape({}).isRequired
 };

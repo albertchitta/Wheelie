@@ -1,5 +1,5 @@
 /* eslint-disable no-restricted-globals */
-import * as React from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -7,10 +7,10 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { deleteTrail } from '../api/data/TrailData';
+import { createTrail, deleteTrail } from '../api/data/TrailData';
 import { useNavigate } from 'react-router-dom';
 
-export default function GearCard({ trail, setTrails }) {
+export default function ExploreTrailCard({ trail, setTrails, biker }) {
   const navigate = useNavigate();
 
   const handleClick = (method) => {
@@ -23,8 +23,8 @@ export default function GearCard({ trail, setTrails }) {
     } else if (method === 'edit') {
         navigate(`/edit-trail/${trail.id}`)
     } else if (method === 'add') {
-      trail.bikerId = 1;
-      console.warn('added');
+        trail.bikerId = biker.id;
+        createTrail(trail).then(setTrails);
     }
   }
 
@@ -50,17 +50,26 @@ export default function GearCard({ trail, setTrails }) {
       </CardContent>
       <CardActions>
         <Button size="small" onClick={() => handleClick('add')}>Add</Button>
-        <Button size="small" onClick={() => handleClick('edit')}>Edit</Button>
-        <Button size="small" onClick={() => handleClick('delete')}>Remove</Button>
+        {biker.role === 'admin' ? (
+          <>
+            <Button size="small" onClick={() => handleClick('edit')}>Edit</Button>
+            <Button size="small" onClick={() => handleClick('delete')}>Remove</Button>
+          </>
+        ) : (
+          ''
+        )}
       </CardActions>
     </Card>
   );
 }
 
-GearCard.propTypes = {
+ExploreTrailCard.propTypes = {
   trail: PropTypes.shape({
-    bikeId: PropTypes.number,
-    clothingId: PropTypes.number,
     bikerId: PropTypes.number,
+    imageUrl: PropTypes.string,
+    name: PropTypes.string,
+    location: PropTypes.string,
+    distance: PropTypes.number,
+    grade: PropTypes.number
   }).isRequired
 }

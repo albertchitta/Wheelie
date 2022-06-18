@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -15,7 +16,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-import TrailForm from '../components/TrailForm';
+import BikeForm from '../components/BikeForm';
+import { getBike } from '../api/data/BikeData';
 
 const drawerWidth = 240;
 
@@ -65,8 +67,22 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent({ biker }) {
+function DashboardContent() {
   const [open, setOpen] = useState(true);
+  const [editBike, setEditBike] = useState({});
+  const { bikeId } = useParams();
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      getBike(bikeId).then(setEditBike);
+    }
+
+    return() => {
+      isMounted = false;
+    };
+  }, [bikeId]);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -101,7 +117,7 @@ function DashboardContent({ biker }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Create Trail
+              Edit Bike: {editBike.brand}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -153,7 +169,7 @@ function DashboardContent({ biker }) {
                 alignItems: 'center',
               }}
             >
-              <TrailForm trail={{}} />
+              <BikeForm bike={editBike} />
             </Box>
           </Container>
         </Box>
@@ -162,6 +178,6 @@ function DashboardContent({ biker }) {
   );
 }
 
-export default function CreateTrail() {
+export default function EditBike() {
   return <DashboardContent />;
 }

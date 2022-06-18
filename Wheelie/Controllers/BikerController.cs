@@ -17,7 +17,6 @@ namespace Wheelie.Controllers
         }
 
         // GET: /bikers
-        [Authorize]
         [HttpGet]
         public List<Biker> Get()
         {
@@ -51,7 +50,6 @@ namespace Wheelie.Controllers
         }
 
         // POST /biker
-        [Authorize]
         [HttpPost]
         public IActionResult Post(Biker biker)
         {
@@ -63,7 +61,6 @@ namespace Wheelie.Controllers
         }
 
         // PATCH /bikers/{firebaseUserId}
-        [Authorize]
         [HttpPatch("{firebaseUserId}")]
         public IActionResult Patch(string firebaseUserId, Biker biker)
         {
@@ -86,7 +83,6 @@ namespace Wheelie.Controllers
         }
 
         // DELETE /bikers/{firebaseUserId}
-        [Authorize]
         [HttpDelete("{firebaseUserId}")]
         public IActionResult Delete(string firebaseUserId)
         {

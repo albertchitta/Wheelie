@@ -16,11 +16,11 @@ const getBikes = () => new Promise((resolve, reject) => {
     });
 });
 
-// Get all bikes by bikerId
+// Get bikes by bikerId
 const getBikesByBikerId = (bikerId) => new Promise((resolve, reject) => {
   return getToken().then((token) => {
       axios
-      .get(`${dbUrl}/bikes${bikerId}`, {
+      .get(`${dbUrl}/biker${bikerId}`, {
           headers: {
               Authorization: `Bearer ${token}`,
           },
@@ -34,7 +34,7 @@ const getBikesByBikerId = (bikerId) => new Promise((resolve, reject) => {
 const getBike = (id) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
-        .get(`${dbUrl}/bikes/${id}`, {
+        .get(`${dbUrl}/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -67,7 +67,7 @@ const updateBike = (bike) => new Promise((resolve, reject) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then(() => getBikes().then(resolve))
+        .then(() => getBikesByBikerId(bike.bikerId).then(resolve))
         .catch(reject);
     });
 });
@@ -81,7 +81,7 @@ const deleteBike = (bike) => new Promise((resolve, reject) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then(() => getBikes().then(resolve))
+        .then(() => getBikesByBikerId(bike.bikerId).then(resolve))
         .catch(reject);
     });
 });

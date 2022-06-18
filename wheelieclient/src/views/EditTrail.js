@@ -117,7 +117,7 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Wheelie
+              Edit Trail: {editTrail.name}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -169,9 +169,6 @@ function DashboardContent() {
                 alignItems: 'center',
               }}
             >
-              <Typography component="h1" variant="h5">
-                Edit {editTrail.name}
-              </Typography>
               <TrailForm trail={editTrail} />
             </Box>
           </Container>

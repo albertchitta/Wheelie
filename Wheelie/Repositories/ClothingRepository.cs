@@ -29,9 +29,11 @@ namespace Wheelie.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT Id,
+                                               BikerId,
                                                Jersey,
                                                Goggles,
                                                Shoes,
+                                               Helmet,
                                                Other
                                         FROM Clothing";
 
@@ -42,9 +44,56 @@ namespace Wheelie.Repositories
                         Clothing clothing = new Clothing
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
                             Jersey = reader.GetString(reader.GetOrdinal("Jersey")),
                             Goggles = reader.GetString(reader.GetOrdinal("Goggles")),
                             Shoes = reader.GetString(reader.GetOrdinal("Shoes")),
+                            Helmet = reader.GetString(reader.GetOrdinal("Helmet")),
+                            Other = reader.GetString(reader.GetOrdinal("Other"))
+                        };
+
+                        clothings.Add(clothing);
+                    }
+
+                    reader.Close();
+
+                    Console.WriteLine(clothings);
+                    return clothings;
+                }
+            }
+        }
+
+        public List<Clothing> GetClothingsByBikerId(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id,
+                                               BikerId,
+                                               Jersey,
+                                               Goggles,
+                                               Shoes,
+                                               Helmet,
+                                               Other
+                                        FROM Clothing
+                                        WHERE BikerId = @id";
+                    
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    List<Clothing> clothings = new List<Clothing>();
+                    while (reader.Read())
+                    {
+                        Clothing clothing = new Clothing
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
+                            Jersey = reader.GetString(reader.GetOrdinal("Jersey")),
+                            Goggles = reader.GetString(reader.GetOrdinal("Goggles")),
+                            Shoes = reader.GetString(reader.GetOrdinal("Shoes")),
+                            Helmet = reader.GetString(reader.GetOrdinal("Helmet")),
                             Other = reader.GetString(reader.GetOrdinal("Other"))
                         };
 
@@ -67,9 +116,11 @@ namespace Wheelie.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT Id,
+                                               BikerId,
                                                Jersey,
                                                Goggles,
                                                Shoes,
+                                               Helmet,
                                                Other
                                         FROM Clothing
                                         WHERE Id = @id";
@@ -83,9 +134,11 @@ namespace Wheelie.Repositories
                         Clothing clothing = new Clothing
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
                             Jersey = reader.GetString(reader.GetOrdinal("Jersey")),
                             Goggles = reader.GetString(reader.GetOrdinal("Goggles")),
                             Shoes = reader.GetString(reader.GetOrdinal("Shoes")),
+                            Helmet = reader.GetString(reader.GetOrdinal("Helmet")),
                             Other = reader.GetString(reader.GetOrdinal("Other"))
                         };
 
@@ -108,16 +161,20 @@ namespace Wheelie.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Clothing (Jersey,
+                    cmd.CommandText = @"INSERT INTO Clothing (BikerId,
+                                                              Jersey,
                                                               Goggles,
                                                               Shoes,
+                                                              Helmet,
                                                               Other)
                                         OUTPUT INSERTED.ID
-                                        VALUES (@jersey, @goggles, @shoes, @other);";
+                                        VALUES (@bikerId, @jersey, @goggles, @shoes, @helmet, @other);";
 
+                    cmd.Parameters.AddWithValue("@bikerId", clothing.BikerId);
                     cmd.Parameters.AddWithValue("@jersey", clothing.Jersey);
                     cmd.Parameters.AddWithValue("@goggles", clothing.Goggles);
                     cmd.Parameters.AddWithValue("@shoes", clothing.Shoes);
+                    cmd.Parameters.AddWithValue("@helmet", clothing.Helmet);
                     cmd.Parameters.AddWithValue("@other", clothing.Other);
 
                     int id = (int)cmd.ExecuteScalar();
@@ -136,16 +193,20 @@ namespace Wheelie.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"UPDATE Clothing
-                                        SET Jersey = @jersey,
+                                        SET BikerId = @bikerId,
+                                            Jersey = @jersey,
                                             Goggles = @goggles,
                                             Shoes = @shoes,
+                                            Helmet = @helmet,
                                             Other = @other
                                         WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", clothing.Id);
+                    cmd.Parameters.AddWithValue("@bikerId", clothing.BikerId);
                     cmd.Parameters.AddWithValue("@jersey", clothing.Jersey);
                     cmd.Parameters.AddWithValue("@goggles", clothing.Goggles);
                     cmd.Parameters.AddWithValue("@shoes", clothing.Shoes);
+                    cmd.Parameters.AddWithValue("@helmet", clothing.Helmet);
                     cmd.Parameters.AddWithValue("@other", clothing.Other);
 
                     cmd.ExecuteNonQuery();

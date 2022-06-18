@@ -43,9 +43,10 @@ export default function SignUp() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     const data = new FormData(event.currentTarget);
 
-    const fullName = `${data.get('firstName')} ${data.get('lastName')}`;
+    const name = `${data.get('firstName')} ${data.get('lastName')}`;
     const userName = data.get('userName');
     const email = data.get('email');
     const password = data.get('password');
@@ -58,9 +59,8 @@ export default function SignUp() {
     if (password && password !== confirmPassword) {
       alert("Passwords don't match. Do better.");
     } else {
-      const biker = { fullName, userName, email, location, level, rides, distance, imageUrl, role:'user' };
-      signup(biker, password)
-        .then(() => navigate("/"));
+      const biker = { name, userName, email, location, level, rides, distance, imageUrl, role:'user' };
+      signup(biker, password).then(() => navigate("/"));
     }
   };
 
@@ -210,7 +210,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

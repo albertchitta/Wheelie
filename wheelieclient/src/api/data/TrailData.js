@@ -68,7 +68,7 @@ const updateTrail = (trail) => new Promise((resolve, reject) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then(() => getTrails().then(resolve))
+        .then(() => getTrailsByBikerId(trail.bikerId).then(resolve))
         .catch(reject);
     });
 });
@@ -82,7 +82,7 @@ const deleteTrail = (trail) => new Promise((resolve, reject) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then(() => getTrails().then(resolve))
+        .then(() => getTrailsByBikerId(trail.bikerId).then(resolve))
         .catch(reject);
     });
 });

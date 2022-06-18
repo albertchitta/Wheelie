@@ -15,14 +15,21 @@ namespace Wheelie.Controllers
         {
             _clothingRepo = clothingRepository;
         }
-        // GET: api/clothings
+        // GET: clothings
         [HttpGet]
         public List<Clothing> Get()
         {
             return _clothingRepo.GetAllClothings();
         }
 
-        // GET: api/clothings/{id}
+        // GET: clothings/biker{id}
+        [HttpGet("biker{id}")]
+        public List<Clothing> GetClothingsByBikerId(int id)
+        {
+            return _clothingRepo.GetClothingsByBikerId(id);
+        }
+
+        // GET: clothings/{id}
         [HttpGet("{id}")]
         public IActionResult GetClothingById(int id)
         {
@@ -35,7 +42,7 @@ namespace Wheelie.Controllers
             return Ok(clothing);
         }
 
-        // POST api/clothing
+        // POST clothing
         [HttpPost]
         public IActionResult Post(Clothing clothing)
         {
@@ -44,7 +51,7 @@ namespace Wheelie.Controllers
             return Ok(clothing);
         }
 
-        // PATCH api/clothings/{id}
+        // PATCH clothings/{id}
         [HttpPatch("{id}")]
         public IActionResult Patch(int id, Clothing clothing)
         {
@@ -66,7 +73,7 @@ namespace Wheelie.Controllers
             }
         }
 
-        // DELETE api/clothings/{id}
+        // DELETE clothings/{id}
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {

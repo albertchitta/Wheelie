@@ -9,7 +9,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tab from '@mui/material/Tab';
@@ -18,12 +17,14 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import Grid from '@mui/material/Grid';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { Button } from '@mui/material';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
+import BikeCard from '../components/BikeCard';
 import { useNavigate } from 'react-router-dom';
 import Container from '@mui/material/Container';
 import { getBikesByBikerId } from '../api/data/BikeData';
+import { getClothingsByBikerId } from '../api/data/ClothingData';
+import ClothingCard from '../components/ClothingCard';
 
 function Copyright(props) {
   return (
@@ -91,8 +92,7 @@ function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
   const [value, setValue] = useState('bikes');
   const [bikes, setBikes] = useState([]);
-  // const [helmets, setHelmets] = useState([]);
-  // const [clothings, setClothings] = useState([]);
+  const [clothings, setClothings] = useState([]);
   const navigate = useNavigate();
 
   const handleChange = (event, newValue) => {
@@ -100,8 +100,10 @@ function DashboardContent({ biker }) {
   };
 
   const handleClick = (method) => {
-    if (method === 'create') {
-      navigate('/create-trail')
+    if (method === 'addBike') {
+      navigate('/add-bike')
+    } else {
+      navigate('/add-clothing')
     }
   }
 
@@ -113,13 +115,14 @@ function DashboardContent({ biker }) {
     let isMounted = true;
     
     if (isMounted) {
-      // getTrails().then(setTrails);
+      getBikesByBikerId(biker.id).then(setBikes);
+      getClothingsByBikerId(biker.id).then(setClothings);
     }
 
     return () => {
       isMounted = false;
     }
-  }, []);
+  }, [biker.id]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -150,13 +153,8 @@ function DashboardContent({ biker }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Wheelie
+              Gear
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -197,23 +195,33 @@ function DashboardContent({ biker }) {
               <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                 <TabList onChange={handleChange} aria-label="lab API tabs example">
                   <Tab label="Bikes" value="bikes" />
-                  <Tab label="Helmets" value="helmets" />
                   <Tab label="Clothing" value="clothing" />
                 </TabList>
               </Box>
               <TabPanel value="bikes">
-              <Grid item xs={12} md={8} lg={9}>
-                {/* {trails.length ? (
-                  trails.map((trail) => (
-                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
-                  ))
-                ) : (
-                  <h1>No Trails</h1>
-                )} */}
-              </Grid>
+              <Button onClick={() => handleClick('addBike')}>ADD BIKE</Button>
+                <Grid item xs={12} md={8} lg={9}>
+                  {bikes.length ? (
+                    bikes.map((bike) => (
+                      <BikeCard key={bike.id} bike={bike} setBikes={setBikes} biker={biker} />
+                    ))
+                  ) : (
+                    <h1>No Bikes</h1>
+                  )}
+                </Grid>
               </TabPanel>
-              <TabPanel value="helmets">Item Two</TabPanel>
-              <TabPanel value="clothing">Item Three</TabPanel>
+              <TabPanel value="clothing">
+              <Button onClick={() => handleClick('addClothing')}>ADD CLOTHING SET</Button>
+                <Grid item xs={12} md={8} lg={9}>
+                  {clothings.length ? (
+                    clothings.map((clothing) => (
+                      <ClothingCard key={clothing.id} clothing={clothing} clothings={clothings} setClothings={setClothings} biker={biker} />
+                    ))
+                  ) : (
+                    <h1>No Clothing Set</h1>
+                  )}
+                </Grid>
+              </TabPanel>
             </TabContext>
             <Copyright sx={{ pt: 4 }} />
           </Container>
@@ -224,5 +232,5 @@ function DashboardContent({ biker }) {
 }
 
 export default function Gear({ biker }) {
-  return <DashboardContent biker={biker} />;
+  return <DashboardContent biker={biker}/>;
 }

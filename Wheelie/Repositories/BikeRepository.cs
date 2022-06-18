@@ -29,6 +29,8 @@ namespace Wheelie.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT Id,
+                                               BikerId,
+                                               ImageUrl,
                                                Brand,
                                                Color,
                                                Accessories
@@ -41,6 +43,51 @@ namespace Wheelie.Repositories
                         Bike bike = new Bike
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
+                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
+                            Brand = reader.GetString(reader.GetOrdinal("Brand")),
+                            Color = reader.GetString(reader.GetOrdinal("Color")),
+                            Accessories = reader.GetString(reader.GetOrdinal("Accessories"))
+                        };
+
+                        bikes.Add(bike);
+                    }
+
+                    reader.Close();
+
+                    Console.WriteLine(bikes);
+                    return bikes;
+                }
+            }
+        }
+
+        public List<Bike> GetBikesByBikerId(int id)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT Id,
+                                               BikerId,
+                                               ImageUrl,
+                                               Brand,
+                                               Color,
+                                               Accessories
+                                        FROM Bike
+                                        WHERE BikerId = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    List<Bike> bikes = new List<Bike>();
+                    while (reader.Read())
+                    {
+                        Bike bike = new Bike
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
+                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             Brand = reader.GetString(reader.GetOrdinal("Brand")),
                             Color = reader.GetString(reader.GetOrdinal("Color")),
                             Accessories = reader.GetString(reader.GetOrdinal("Accessories"))
@@ -65,6 +112,8 @@ namespace Wheelie.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT Id,
+                                               BikerId,
+                                               ImageUrl,
                                                Brand,
                                                Color,
                                                Accessories
@@ -80,6 +129,8 @@ namespace Wheelie.Repositories
                         Bike bike = new Bike
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            BikerId = reader.GetInt32(reader.GetOrdinal("BikerId")),
+                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
                             Brand = reader.GetString(reader.GetOrdinal("Brand")),
                             Color = reader.GetString(reader.GetOrdinal("Color")),
                             Accessories = reader.GetString(reader.GetOrdinal("Accessories"))
@@ -104,12 +155,16 @@ namespace Wheelie.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Bike (Brand,
+                    cmd.CommandText = @"INSERT INTO Bike (BikerId,
+                                                          ImageUrl,
+                                                          Brand,
                                                           Color,
                                                           Accessories)
                                         OUTPUT INSERTED.ID
-                                        VALUES (@brand, @color, @accessories);";
+                                        VALUES (@bikerId, @imageUrl, @brand, @color, @accessories);";
 
+                    cmd.Parameters.AddWithValue("@bikerId", bike.BikerId);
+                    cmd.Parameters.AddWithValue("@imageUrl", bike.ImageUrl);
                     cmd.Parameters.AddWithValue("@brand", bike.Brand);
                     cmd.Parameters.AddWithValue("@color", bike.Color);
                     cmd.Parameters.AddWithValue("@accessories", bike.Accessories);
@@ -130,12 +185,16 @@ namespace Wheelie.Repositories
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"UPDATE Bike
-                                        SET Brand = @brand,
+                                        SET BikerId = @bikerId,
+                                            ImageUrl = @imageUrl,
+                                            Brand = @brand,
                                             Color = @color,
                                             Accessories = @accessories
                                         WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", bike.Id);
+                    cmd.Parameters.AddWithValue("@bikerId", bike.BikerId);
+                    cmd.Parameters.AddWithValue("@imageUrl", bike.ImageUrl);
                     cmd.Parameters.AddWithValue("@brand", bike.Brand);
                     cmd.Parameters.AddWithValue("@color", bike.Color);
                     cmd.Parameters.AddWithValue("@accessories", bike.Accessories);

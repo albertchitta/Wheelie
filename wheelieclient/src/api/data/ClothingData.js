@@ -20,7 +20,7 @@ const getClothings = () => new Promise((resolve, reject) => {
 const getClothingsByBikerId = (bikerId) => new Promise((resolve, reject) => {
   return getToken().then((token) => {
       axios
-      .get(`${dbUrl}/clothings${bikerId}`, {
+      .get(`${dbUrl}/biker${bikerId}`, {
           headers: {
               Authorization: `Bearer ${token}`,
           },
