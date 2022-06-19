@@ -36,9 +36,7 @@ namespace Wheelie.Repositories
                                                UserName,
                                                [Level],
                                                [Location],
-                                               ImageUrl,
-                                               Rides,
-                                               Distance
+                                               ImageUrl
                                         FROM Biker";
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -55,9 +53,7 @@ namespace Wheelie.Repositories
                             UserName = reader.GetString(reader.GetOrdinal("UserName")),
                             Level = reader.GetString(reader.GetOrdinal("Level")),
                             Location = reader.GetString(reader.GetOrdinal("Location")),
-                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
-                            Rides = reader.GetInt32(reader.GetOrdinal("Rides")),
-                            Distance = (double)reader.GetDecimal(reader.GetOrdinal("Distance"))
+                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl"))
                         };
 
                         bikers.Add(biker);
@@ -86,9 +82,7 @@ namespace Wheelie.Repositories
                                                UserName,
                                                [Level],
                                                [Location],
-                                               ImageUrl,
-                                               Rides,
-                                               Distance
+                                               ImageUrl
                                         FROM Biker
                                         WHERE FirebaseUserId = @firebaseUserId";
 
@@ -108,9 +102,7 @@ namespace Wheelie.Repositories
                             UserName = reader.GetString(reader.GetOrdinal("UserName")),
                             Level = reader.GetString(reader.GetOrdinal("Level")),
                             Location = reader.GetString(reader.GetOrdinal("Location")),
-                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl")),
-                            Rides = reader.GetInt32(reader.GetOrdinal("Rides")),
-                            Distance = (double)reader.GetDecimal(reader.GetOrdinal("Distance"))
+                            ImageUrl = reader.GetString(reader.GetOrdinal("ImageUrl"))
                         };
 
                         reader.Close();
@@ -139,11 +131,9 @@ namespace Wheelie.Repositories
                                                            UserName,
                                                            [Level],
                                                            [Location],
-                                                           ImageUrl,
-                                                           Rides,
-                                                           Distance)
+                                                           ImageUrl)
                                         OUTPUT INSERTED.ID
-                                        VALUES (@firebaseUserId, @role, @name, @email, @userName, @level, @location, @imageUrl, @rides, @distance);";
+                                        VALUES (@firebaseUserId, @role, @name, @email, @userName, @level, @location, @imageUrl);";
 
                     cmd.Parameters.AddWithValue("@firebaseUserId", biker.FirebaseUserId);
                     cmd.Parameters.AddWithValue("@role", biker.Role);
@@ -153,8 +143,6 @@ namespace Wheelie.Repositories
                     cmd.Parameters.AddWithValue("@level", biker.Level);
                     cmd.Parameters.AddWithValue("@location", biker.Location);
                     cmd.Parameters.AddWithValue("@imageUrl", biker.ImageUrl);
-                    cmd.Parameters.AddWithValue("@rides", biker.Rides);
-                    cmd.Parameters.AddWithValue("@distance", biker.Distance);
 
                     int id = (int)cmd.ExecuteScalar();
 
@@ -178,9 +166,7 @@ namespace Wheelie.Repositories
                                             UserName = @userName,
                                             [Level] = @level,
                                             [Location] = @location,
-                                            ImageUrl = @imageUrl,
-                                            Rides = @rides,
-                                            Distance = @distance
+                                            ImageUrl = @imageUrl
                                         WHERE FirebaseUserId = @firebaseUserId";
 
                     cmd.Parameters.AddWithValue("@firebaseUserId", biker.FirebaseUserId);
@@ -191,8 +177,6 @@ namespace Wheelie.Repositories
                     cmd.Parameters.AddWithValue("@level", biker.Level);
                     cmd.Parameters.AddWithValue("@location", biker.Location);
                     cmd.Parameters.AddWithValue("@imageUrl", biker.ImageUrl);
-                    cmd.Parameters.AddWithValue("@rides", biker.Rides);
-                    cmd.Parameters.AddWithValue("@distance", biker.Distance);
 
                     cmd.ExecuteNonQuery();
                 }

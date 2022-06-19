@@ -9,7 +9,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -25,20 +24,7 @@ import Container from '@mui/material/Container';
 import { getBikesByBikerId } from '../api/data/BikeData';
 import { getClothingsByBikerId } from '../api/data/ClothingData';
 import ClothingCard from '../components/ClothingCard';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
+import Footer from '../components/Footer';
 
 const drawerWidth = 240;
 
@@ -148,6 +134,15 @@ function DashboardContent({ biker }) {
             </IconButton>
             <Typography
               component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+              sx={{ marginRight: "1em" }}
+            >
+              Wheelie
+            </Typography>
+            <Typography
+              component="h1"
               variant="h6"
               color="inherit"
               noWrap
@@ -185,7 +180,7 @@ function DashboardContent({ biker }) {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
+            minHeight: '100vh',
             overflow: 'auto',
           }}
         >
@@ -223,10 +218,10 @@ function DashboardContent({ biker }) {
                 </Grid>
               </TabPanel>
             </TabContext>
-            <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
+      <Footer />
     </ThemeProvider>
   );
 }

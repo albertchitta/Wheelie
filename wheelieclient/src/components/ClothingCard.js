@@ -19,9 +19,10 @@ export default function ClothingCard({ clothing, clothings, setClothings, biker 
 
       if (del) {
         deleteClothing(clothing).then(setClothings);
-      } else {
-        navigate(`/edit-clothing/${clothing.id}`)
+        navigate('/gear');
       }
+    } else {
+      navigate(`/edit-clothing/${clothing.id}`)
     }
   }
 

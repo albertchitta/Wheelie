@@ -41,11 +41,9 @@ export const login = (email, pw) => {
     });
 };
 
-
 export const logout = () => {
   firebase.auth().signOut()
 };
-
 
 export const signup = (biker, password) => {
   return firebase.auth().createUserWithEmailAndPassword(biker.email, password)

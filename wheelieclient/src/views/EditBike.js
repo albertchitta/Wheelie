@@ -18,6 +18,7 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
 import BikeForm from '../components/BikeForm';
 import { getBike } from '../api/data/BikeData';
+import Footer from '../components/Footer';
 
 const drawerWidth = 240;
 
@@ -112,6 +113,15 @@ function DashboardContent() {
             </IconButton>
             <Typography
               component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+              sx={{ marginRight: "1em" }}
+            >
+              Wheelie
+            </Typography>
+            <Typography
+              component="h1"
               variant="h6"
               color="inherit"
               noWrap
@@ -154,7 +164,7 @@ function DashboardContent() {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
+            minHeight: '100vh',
             overflow: 'auto',
           }}
         >
@@ -174,6 +184,7 @@ function DashboardContent() {
           </Container>
         </Box>
       </Box>
+      <Footer />
     </ThemeProvider>
   );
 }

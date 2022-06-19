@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -10,13 +11,12 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-import { getTrailsByBikerId } from '../api/data/TrailData';
-import TrailCard from '../components/TrailCard';
+import ClothingForm from '../components/ClothingForm';
 import Footer from '../components/Footer';
+import { getClothing } from '../api/data/ClothingData';
 
 const drawerWidth = 240;
 
@@ -66,9 +66,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent({ biker }) {
+function DashboardContent() {
   const [open, setOpen] = useState(true);
-  const [trails, setTrails] = useState([]);
+  const [editClothing, setEditClothing] = useState({});
+  const { clothingId } = useParams();
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -76,15 +77,15 @@ function DashboardContent({ biker }) {
 
   useEffect(() => {
     let isMounted = true;
-    
+
     if (isMounted) {
-      getTrailsByBikerId(biker.id).then(setTrails);
+      getClothing(clothingId).then(setEditClothing);
     }
 
-    return () => {
+    return() => {
       isMounted = false;
-    }
-  }, [biker.id]);
+    };
+  }, [clothingId]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -124,7 +125,7 @@ function DashboardContent({ biker }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Trails
+              Add Clothing Set
             </Typography>
           </Toolbar>
         </AppBar>
@@ -161,19 +162,18 @@ function DashboardContent({ biker }) {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={8} lg={9}>
-                <header>TRAILS</header>
-                {trails.length ? (
-                  trails.map((trail) => (
-                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
-                  ))
-                ) : (
-                  <h1>No Trails</h1>
-                )}
-              </Grid>
-            </Grid>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <ClothingForm clothing={editClothing} />
+            </Box>
           </Container>
         </Box>
       </Box>
@@ -182,6 +182,6 @@ function DashboardContent({ biker }) {
   );
 }
 
-export default function Trails({ biker }) {
-  return <DashboardContent biker={biker} />;
+export default function EditClothing() {
+  return <DashboardContent />;
 }

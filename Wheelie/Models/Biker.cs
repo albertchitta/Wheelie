@@ -27,7 +27,5 @@ namespace Wheelie.Models
         [Required]
         public string Location { get; set; }
         public string ImageUrl { get; set; }
-        public int Rides { get; set; }
-        public double Distance { get; set; }
     }
 }

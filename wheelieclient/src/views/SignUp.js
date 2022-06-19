@@ -9,27 +9,13 @@ import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import InputAdornment from '@mui/material/InputAdornment';
 import Select from '@mui/material/Select';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { signup } from '../api/authManager';
 import { useNavigate } from 'react-router-dom';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
+import Footer from '../components/Footer';
 
 const theme = createTheme();
 
@@ -52,14 +38,12 @@ export default function SignUp() {
     const password = data.get('password');
     const confirmPassword = data.get('confirmPassword');
     const location = data.get('location');
-    const rides = data.get('rides');
-    const distance = data.get('distance');
     const imageUrl = data.get('imageUrl');
 
     if (password && password !== confirmPassword) {
       alert("Passwords don't match. Do better.");
     } else {
-      const biker = { name, userName, email, location, level, rides, distance, imageUrl, role:'user' };
+      const biker = { name, userName, email, location, level, imageUrl, role:'user' };
       signup(biker, password).then(() => navigate("/"));
     }
   };
@@ -74,6 +58,7 @@ export default function SignUp() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            minHeight: '100vh'
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
@@ -169,27 +154,6 @@ export default function SignUp() {
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name="rides"
-                  required
-                  fullWidth
-                  id="rides"
-                  label="Number of Rides"
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  name="distance"
-                  required
-                  fullWidth
-                  id="distance"
-                  label="Distance Traveled"
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">mi</InputAdornment>,
-                  }}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <TextField
                   name="imageUrl"
@@ -217,8 +181,8 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
+      <Footer />
     </ThemeProvider>
   );
 }

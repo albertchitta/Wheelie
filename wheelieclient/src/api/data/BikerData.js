@@ -18,6 +18,7 @@ const getBikers = () => new Promise((resolve, reject) => {
 });
 
 // Get biker info for profile
+// ADD ASYNC AWAIT
 const getBiker = (firebaseUserId) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
@@ -54,7 +55,7 @@ const updateBiker = (biker) => new Promise((resolve, reject) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then(() => getBikers().then(resolve))
+        .then(() => getBiker(biker.firebaseUserId).then(resolve))
         .catch(reject);
     });
 });

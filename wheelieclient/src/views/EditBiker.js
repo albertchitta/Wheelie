@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -10,13 +11,11 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-import { getTrailsByBikerId } from '../api/data/TrailData';
-import TrailCard from '../components/TrailCard';
-import Footer from '../components/Footer';
+import { getBiker } from '../api/data/BikerData';
+import BikerForm from '../components/BikerForm';
 
 const drawerWidth = 240;
 
@@ -68,23 +67,24 @@ const mdTheme = createTheme();
 
 function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
-  const [trails, setTrails] = useState([]);
+  const [editBiker, setEditBiker] = useState({});
+  const { firebaseUserId } = useParams();
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted) {
+      getBiker(firebaseUserId).then(setEditBiker);
+    }
+
+    return() => {
+      isMounted = false;
+    };
+  }, [firebaseUserId]);
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
-
-  useEffect(() => {
-    let isMounted = true;
-    
-    if (isMounted) {
-      getTrailsByBikerId(biker.id).then(setTrails);
-    }
-
-    return () => {
-      isMounted = false;
-    }
-  }, [biker.id]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -124,7 +124,7 @@ function DashboardContent({ biker }) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Trails
+              Edit Biker: {biker.name}
             </Typography>
           </Toolbar>
         </AppBar>
@@ -161,27 +161,25 @@ function DashboardContent({ biker }) {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} md={8} lg={9}>
-                <header>TRAILS</header>
-                {trails.length ? (
-                  trails.map((trail) => (
-                    <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
-                  ))
-                ) : (
-                  <h1>No Trails</h1>
-                )}
-              </Grid>
-            </Grid>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+              }}
+            >
+              <BikerForm biker={editBiker} />
+            </Box>
           </Container>
         </Box>
       </Box>
-      <Footer />
     </ThemeProvider>
   );
 }
 
-export default function Trails({ biker }) {
+export default function EditBiker({ biker }) {
   return <DashboardContent biker={biker} />;
 }

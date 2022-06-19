@@ -10,7 +10,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -27,20 +26,9 @@ import Container from '@mui/material/Container';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
+import Footer from '../components/Footer';
+import BikerCard from '../components/BikerCard';
+import { getBikers } from '../api/data/BikerData';
 
 const drawerWidth = 240;
 
@@ -98,6 +86,7 @@ function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
   const [value, setValue] = useState('trails');
   const [trails, setTrails] = useState([]);
+  const [bikers, setBikers] = useState([]);
   const [input, setInput] = useState(initialState);
   const navigate = useNavigate();
 
@@ -107,7 +96,7 @@ function DashboardContent({ biker }) {
 
   const handleClick = (method) => {
     if (method === 'create') {
-      navigate('/create-trail')
+      navigate('/create-trail');
     }
   }
 
@@ -120,6 +109,7 @@ function DashboardContent({ biker }) {
     
     if (isMounted) {
       getTrailsByBikerId(0).then(setTrails);
+      getBikers().then(setBikers);
     }
 
     return () => {
@@ -174,6 +164,15 @@ function DashboardContent({ biker }) {
             </IconButton>
             <Typography
               component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+              sx={{ marginRight: "1em" }}
+            >
+              Wheelie
+            </Typography>
+            <Typography
+              component="h1"
               variant="h6"
               color="inherit"
               noWrap
@@ -211,7 +210,7 @@ function DashboardContent({ biker }) {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
+            minHeight: '100vh',
             overflow: 'auto',
           }}
         >
@@ -225,40 +224,51 @@ function DashboardContent({ biker }) {
                 </TabList>
               </Box>
               <TabPanel value="trails">
-              <Button onClick={() => handleClick('create')}>CREATE TRAIL</Button>
-              <Paper
-                component="form"
-                sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', maxWidth: 400 }}
-                onSubmit={handleSubmit}
-              >
-                <InputBase
-                  sx={{ ml: 1, flex: 1 }}
-                  placeholder="Search Bike Trails"
-                  inputProps={{ 'aria-label': 'search bike trails' }}
-                  name="trail"
-                  id="trail"
-                  value={input.trail || ''}
-                  onChange={handleSearch}
-                />
-                <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
-                  <SearchIcon />
-                </IconButton>
-              </Paper>
-              <Grid item xs={12} md={8} lg={9}>
-                {trails.length ? (
-                  trails.map((trail) => (
-                      trail.bikerId === 0 ? <ExploreTrailCard key={trail.id} trail={trail} setTrails={setTrails} biker={biker} /> : ''
-                  ))
-                ) : (
-                  <h1>No Trails</h1>
-                )}
-              </Grid>
+                <Button onClick={() => handleClick('create')}>CREATE TRAIL</Button>
+                <Paper
+                  component="form"
+                  sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', maxWidth: 400 }}
+                  onSubmit={handleSubmit}
+                >
+                  <InputBase
+                    sx={{ ml: 1, flex: 1 }}
+                    placeholder="Search Bike Trails"
+                    inputProps={{ 'aria-label': 'search bike trails' }}
+                    name="trail"
+                    id="trail"
+                    value={input.trail || ''}
+                    onChange={handleSearch}
+                  />
+                  <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+                    <SearchIcon />
+                  </IconButton>
+                </Paper>
+                <Grid item xs={12} md={8} lg={9}>
+                  {trails.length ? (
+                    trails.map((trail) => (
+                        trail.bikerId === 0 ? <ExploreTrailCard key={trail.id} trail={trail} setTrails={setTrails} biker={biker} /> : ''
+                    ))
+                  ) : (
+                    <h1>No Trails</h1>
+                  )}
+                </Grid>
+              </TabPanel>
+              <TabPanel value="bikers">
+                <Grid item xs={12} md={8} lg={9}>
+                  {bikers.length ? (
+                    bikers.map((biker) => (
+                      <BikerCard key={biker.id} biker={biker} />
+                    ))
+                  ) : (
+                    <h1>No Bikers</h1>
+                  )}
+                </Grid>
               </TabPanel>
             </TabContext>
-            <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
+      <Footer />
     </ThemeProvider>
   );
 }

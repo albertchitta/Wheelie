@@ -34,7 +34,8 @@ namespace Wheelie.Repositories
                                                [Name],
                                                [Location],
                                                Distance,
-                                               Grade
+                                               Grade,
+                                               [Time]
                                         FROM Trail";
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -50,6 +51,7 @@ namespace Wheelie.Repositories
                             Location = reader.GetString(reader.GetOrdinal("Location")),
                             Distance = (double)reader.GetDecimal(reader.GetOrdinal("Distance")),
                             Grade = reader.GetInt32(reader.GetOrdinal("Grade")),
+                            Time = (double)reader.GetDecimal(reader.GetOrdinal("Time"))
                         };
 
                         trails.Add(trail);
@@ -76,7 +78,8 @@ namespace Wheelie.Repositories
                                                [Name],
                                                [Location],
                                                Distance,
-                                               Grade
+                                               Grade,
+                                               [Time]
                                         FROM Trail
                                         WHERE BikerId = @id";
 
@@ -95,6 +98,7 @@ namespace Wheelie.Repositories
                             Location = reader.GetString(reader.GetOrdinal("Location")),
                             Distance = (double)reader.GetDecimal(reader.GetOrdinal("Distance")),
                             Grade = reader.GetInt32(reader.GetOrdinal("Grade")),
+                            Time = (double)reader.GetDecimal(reader.GetOrdinal("Time"))
                         };
 
                         trails.Add(trail);
@@ -121,7 +125,8 @@ namespace Wheelie.Repositories
                                                [Name],
                                                [Location],
                                                Distance,
-                                               Grade
+                                               Grade,
+                                               [Time]
                                         FROM Trail
                                         WHERE Id = @id";
 
@@ -139,7 +144,8 @@ namespace Wheelie.Repositories
                             Name = reader.GetString(reader.GetOrdinal("Name")),
                             Location = reader.GetString(reader.GetOrdinal("Location")),
                             Distance = (double)reader.GetDecimal(reader.GetOrdinal("Distance")),
-                            Grade = reader.GetInt32(reader.GetOrdinal("Grade"))
+                            Grade = reader.GetInt32(reader.GetOrdinal("Grade")),
+                            Time = (double)reader.GetDecimal(reader.GetOrdinal("Time"))
                         };
 
                         reader.Close();
@@ -166,9 +172,10 @@ namespace Wheelie.Repositories
                                                            [Name],
                                                            [Location],
                                                            Distance,
-                                                           Grade)
+                                                           Grade,
+                                                           [Time])
                                         OUTPUT INSERTED.ID
-                                        VALUES (@BikerId, @ImageUrl, @name, @location, @distance, @grade);";
+                                        VALUES (@BikerId, @ImageUrl, @name, @location, @distance, @grade, @time);";
 
                     cmd.Parameters.AddWithValue("@bikerId", trail.BikerId);
                     cmd.Parameters.AddWithValue("@imageUrl", trail.ImageUrl);
@@ -176,6 +183,7 @@ namespace Wheelie.Repositories
                     cmd.Parameters.AddWithValue("@location", trail.Location);
                     cmd.Parameters.AddWithValue("@distance", trail.Distance);
                     cmd.Parameters.AddWithValue("@grade", trail.Grade);
+                    cmd.Parameters.AddWithValue("@time", trail.Time);
 
                     int id = (int)cmd.ExecuteScalar();
 
@@ -198,7 +206,8 @@ namespace Wheelie.Repositories
                                             [Name] = @name,
                                             [Location] = @location,
                                             Distance = @distance,
-                                            Grade = @grade
+                                            Grade = @grade,
+                                            [Time] = @time
                                         WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", trail.Id);
@@ -208,6 +217,7 @@ namespace Wheelie.Repositories
                     cmd.Parameters.AddWithValue("@location", trail.Location);
                     cmd.Parameters.AddWithValue("@distance", trail.Distance);
                     cmd.Parameters.AddWithValue("@grade", trail.Grade);
+                    cmd.Parameters.AddWithValue("@time", trail.Time);
 
                     cmd.ExecuteNonQuery();
                 }

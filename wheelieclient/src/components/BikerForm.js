@@ -9,33 +9,40 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { createBike, updateBike } from '../api/data/BikeData';
+import { updateBiker } from '../api/data/BikerData';
 
 const initialState = {
+  name: '',
+  email: '',
+  userName: '',
+  level: '',
+  location: '',
   imageUrl: '',
-  brand: '',
-  color: '',
-  accessories: ''
+  role: ''
 };
 
 const mdTheme = createTheme();
 
-function DashboardContent({ bike, biker }) {
+function DashboardContent({ biker }) {
   const [formInput, setFormInput] = useState(initialState);
   const navigate = useNavigate();
+
 
   useEffect(() => {
     let isMounted = true;
 
     if (isMounted) {
-      if (bike.id) {
+      if (biker.id) {
         setFormInput({
-          id: bike.id,
-          bikerId: bike.bikerId,
-          imageUrl: bike.imageUrl,
-          brand: bike.brand,
-          color: bike.color,
-          accessories: bike.accessories,
+          id: biker.id,
+          firebaseUserId: biker.firebaseUserId,
+          name: biker.name,
+          email: biker.email,
+          userName: biker.userName,
+          level: biker.level,
+          location: biker.location,
+          imageUrl: biker.imageUrl,
+          role: biker.role
         });
       }
     }
@@ -43,7 +50,7 @@ function DashboardContent({ bike, biker }) {
     return() => {
       isMounted = false;
     }
-  }, [bike]);
+  }, [biker]);
 
   const resetForm = () => {
     setFormInput(initialState);
@@ -59,17 +66,11 @@ function DashboardContent({ bike, biker }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(bike.id) {
-      updateBike(formInput).then(() => {
+    if(biker.id) {
+      updateBiker(formInput).then(() => {
         resetForm();
-        navigate('/gear');
+        navigate('/');
       });
-    } else {
-        formInput.bikerId = biker.id;
-        createBike(formInput).then(() => {
-          resetForm();
-          navigate('/gear');
-        });
     }
   };
 
@@ -96,45 +97,67 @@ function DashboardContent({ bike, biker }) {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
+                      name="name"
                       required
                       fullWidth
-                      id="imageUrl"
-                      label="Image Url"
+                      id="name"
+                      label="Full Name"
+                      value={formInput.name || ''}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      value={formInput.email || ''}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="userName"
+                      label="User Name"
+                      id="userName"
+                      value={formInput.userName || ''}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      name="level"
+                      required
+                      fullWidth
+                      id="level"
+                      label="Experience Level"
+                      value={formInput.level || ''}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      name="location"
+                      required
+                      fullWidth
+                      label="Location"
+                      id="location"
+                      value={formInput.location || ''}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
                       name="imageUrl"
+                      required
+                      fullWidth
+                      label="Profile Image Url"
+                      id="imageUrl"
                       value={formInput.imageUrl || ''}
-                      onChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      name="brand"
-                      required
-                      fullWidth
-                      id="brand"
-                      label="Brand Name"
-                      value={formInput.brand || ''}
-                      onChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      name="color"
-                      label="Color"
-                      id="color"
-                      value={formInput.color || ''}
-                      onChange={handleChange}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <TextField
-                      name="accessories"
-                      required
-                      fullWidth
-                      id="accessories"
-                      label="Accessories"
-                      value={formInput.accessories || ''}
                       onChange={handleChange}
                     />
                   </Grid>
@@ -145,7 +168,7 @@ function DashboardContent({ bike, biker }) {
                   sx={{ mt: 3, mb: 2 }}
                   onClick={handleSubmit}
                 >
-                  {bike.id ? 'Update' : 'Add'}
+                  Update
                 </Button>
               </Box>
           </Container>
@@ -155,10 +178,20 @@ function DashboardContent({ bike, biker }) {
   );
 }
 
-export default function BikeForm({ bike = {}, biker }) {
-  return <DashboardContent bike={bike} biker={biker} />;
+export default function BikerForm({ biker }) {
+  return <DashboardContent biker={biker} />;
 }
 
-BikeForm.propTypes = {
-  bike: PropTypes.shape({}).isRequired
-};
+BikerForm.propTypes = {
+  biker: PropTypes.shape({
+    id: PropTypes.number,
+    firebaseUserId: PropTypes.string,
+    name: PropTypes.string,
+    email: PropTypes.string,
+    userName: PropTypes.string,
+    level: PropTypes.string,
+    location: PropTypes.string,
+    imageUrl: PropTypes.string,
+    role: PropTypes.string
+  }).isRequired
+}

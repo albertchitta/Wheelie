@@ -15,8 +15,10 @@ function App() {
     onLoginStatusChange(setIsLoggedIn);
 
     firebase.auth().onAuthStateChanged((authed) => {
+      console.warn(authed);
       if (authed) {
         getBiker(authed.uid).then((biker) => {
+          console.warn(biker);
           if (biker.role === "admin") {
             setIsAdmin(true);
           }
