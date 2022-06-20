@@ -77,14 +77,14 @@ function DashboardContent({ biker }) {
   useEffect(() => {
     let isMounted = true;
     
-    if (isMounted) {
+    if (isMounted && Object.keys(biker).length !== 0) {
       getTrailsByBikerId(biker.id).then(setTrails);
     }
 
     return () => {
       isMounted = false;
     }
-  }, [biker.id]);
+  }, [biker]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -164,7 +164,6 @@ function DashboardContent({ biker }) {
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                <header>TRAILS</header>
                 {trails.length ? (
                   trails.map((trail) => (
                     <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />

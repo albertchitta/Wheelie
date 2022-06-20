@@ -44,7 +44,9 @@ export default function SignUp() {
       alert("Passwords don't match. Do better.");
     } else {
       const biker = { name, userName, email, location, level, imageUrl, role:'user' };
-      signup(biker, password).then(() => navigate("/"));
+      signup(biker, password).then(() => {
+        // navigate('/');
+      });
     }
   };
 

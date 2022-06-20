@@ -50,9 +50,10 @@ export const signup = (biker, password) => {
     .then((createResponse) => createBiker({
       ...biker,
       firebaseUserId: createResponse.user.uid
-    }).then(() => _onLoginStatusChangedHandler(true)));
+    }).then(() => {
+      _onLoginStatusChangedHandler(true);
+    }));
 };
-
 
 // This function will be overwritten when the react app calls `onLoginStatusChange`
 let _onLoginStatusChangedHandler = () => {

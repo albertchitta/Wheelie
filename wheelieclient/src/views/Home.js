@@ -90,14 +90,14 @@ function DashboardContent({ biker }) {
   useEffect(() => {
     let isMounted = true;
 
-    if (isMounted) {
+    if (isMounted && Object.keys(biker).length !== 0) {
       getTrailsByBikerId(biker.id).then(setTrails);
     }
 
     return () => {
       isMounted = false;
     }
-  }, [biker.id]);
+  }, [biker]);
 
   trails.forEach((trail) => {
     totalDistance += trail.distance;

@@ -107,7 +107,7 @@ function DashboardContent({ biker }) {
   useEffect(() => {
     let isMounted = true;
     
-    if (isMounted) {
+    if (isMounted && Object.keys(biker).length !== 0) {
       getTrailsByBikerId(0).then(setTrails);
       getBikers().then(setBikers);
     }
@@ -115,7 +115,7 @@ function DashboardContent({ biker }) {
     return () => {
       isMounted = false;
     }
-  }, []);
+  }, [biker]);
 
   const handleSearch = (e) => {
     setInput((prevState) => ({

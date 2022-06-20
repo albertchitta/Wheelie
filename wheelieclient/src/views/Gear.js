@@ -76,6 +76,7 @@ const mdTheme = createTheme();
 
 function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
+  // const [value, setValue] = useState(localStorage.getItem('value'));
   const [value, setValue] = useState('bikes');
   const [bikes, setBikes] = useState([]);
   const [clothings, setClothings] = useState([]);
@@ -83,6 +84,7 @@ function DashboardContent({ biker }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    // setValue(localStorage.setItem('value', newValue));
   };
 
   const handleClick = (method) => {
@@ -100,7 +102,7 @@ function DashboardContent({ biker }) {
   useEffect(() => {
     let isMounted = true;
     
-    if (isMounted) {
+    if (isMounted && Object.keys(biker).length !== 0) {
       getBikesByBikerId(biker.id).then(setBikes);
       getClothingsByBikerId(biker.id).then(setClothings);
     }
@@ -108,7 +110,7 @@ function DashboardContent({ biker }) {
     return () => {
       isMounted = false;
     }
-  }, [biker.id]);
+  }, [biker]);
 
   return (
     <ThemeProvider theme={mdTheme}>
