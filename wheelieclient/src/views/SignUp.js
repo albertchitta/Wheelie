@@ -45,7 +45,7 @@ export default function SignUp() {
     } else {
       const biker = { name, userName, email, location, level, imageUrl, role:'user' };
       signup(biker, password).then(() => {
-        // navigate('/');
+        navigate('/');
       });
     }
   };

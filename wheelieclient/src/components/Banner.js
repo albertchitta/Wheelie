@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 
-export default function Banner() {
+export default function Banner({ biker }) {
   return (
     <Paper
       sx={{
@@ -13,13 +13,14 @@ export default function Banner() {
         color: '#fff',
         mb: 4,
         backgroundSize: 'cover',
+        height: '20vh',
         backgroundRepeat: 'no-repeat',
         backgroundPosition: 'center',
-        backgroundImage: `url(https://swacdn.s3.amazonaws.com/wp-content/uploads/2019/02/15235150/Buffalo-Bayou-Park-Aerial-David-Lloyd-0114-2.jpg)`,
+        backgroundImage: `url(https://www.swagroup.com/wp-content/uploads/2019/01/Buffalo-Bayou-Park-Jonnu-Singleton-6864.jpg)`,
       }}
     >
       {/* Increase the priority of the hero background image */}
-      {<img style={{ display: 'none' }} src="https://swacdn.s3.amazonaws.com/wp-content/uploads/2019/02/15235150/Buffalo-Bayou-Park-Aerial-David-Lloyd-0114-2.jpg" alt="Buffalo Bayou Houston, TX" />}
+      {<img style={{ display: 'none' }} src="https://www.swagroup.com/wp-content/uploads/2019/01/Buffalo-Bayou-Park-Jonnu-Singleton-6864.jpg" alt="Buffalo Bayou Houston, TX" />}
       <Box
         sx={{
           position: 'absolute',
@@ -40,10 +41,7 @@ export default function Banner() {
             }}
           >
             <Typography component="h1" variant="h3" color="inherit" gutterBottom>
-              WHEELIE
-            </Typography>
-            <Typography variant="h5" color="inherit" paragraph>
-              WELCOME
+              Welcome, {biker.name}. Let's ride!
             </Typography>
           </Box>
         </Grid>

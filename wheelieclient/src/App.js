@@ -23,13 +23,12 @@ function App() {
 
           setBiker(biker);
         });
+      } else if (isLoggedIn || isLoggedIn === null) {
+          setBiker(false);
+          return <Spinner className="app-spinner dark"/>;
       }
     });
-  }, []);
-
-  if (isLoggedIn === null) {
-    return <Spinner className="app-spinner dark"/>;
-  }
+  }, [isLoggedIn]);
 
   return (
     <>

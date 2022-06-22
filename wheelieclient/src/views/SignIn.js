@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { login } from '../api/authManager';
 import { useNavigate } from 'react-router-dom';
-import Footer from '../components/Footer';
 
 const theme = createTheme();
 
@@ -109,7 +108,6 @@ export default function SignInSide() {
               </Grid>
             </Box>
           </Box>
-          <Footer />
         </Grid>
       </Grid>
     </ThemeProvider>

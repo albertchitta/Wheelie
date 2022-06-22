@@ -109,7 +109,11 @@ function DashboardContent({ biker }) {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={open}
+          sx={{
+            backgroundColor: '#000000'
+          }}
+        >
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -138,13 +142,17 @@ function DashboardContent({ biker }) {
             </Typography>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={open}
+          sx={{
+            backgroundColor: '#fca311', 
+          }}
+        >
           <Toolbar
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              px: [1],
+              px: [1]
             }}
           >
             <IconButton onClick={toggleDrawer}>
@@ -171,13 +179,21 @@ function DashboardContent({ biker }) {
           }}
         >
           <Toolbar />
-          <Banner />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Banner biker={biker} />
+          <Container maxWidth="xs"
+            sx={{
+              mt: 4, mb: 4
+            }}
+          >
             <Grid container spacing={3}>
               <Grid item xs={12} md={8} lg={9}>
-                <h2>{biker.name}</h2>
-                <h4>{biker.userName}</h4>
-                <Button onClick={() => handleClick('edit')}>Edit</Button>
+                <Typography component="p" variant="h2">
+                  {biker.name}
+                </Typography>
+                <Typography component="p" variant="h4">
+                  @{biker.userName}
+                  <Button onClick={() => handleClick('edit')}>Edit</Button>
+                </Typography>
               </Grid>
               <Grid item xs={12} md={8} lg={9}>
                 <Title>Location</Title>
@@ -211,9 +227,9 @@ function DashboardContent({ biker }) {
               </Grid>
             </Grid>
           </Container>
+      <Footer />
         </Box>
       </Box>
-      <Footer />
     </ThemeProvider>
   );
 }
