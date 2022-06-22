@@ -7,7 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { createTrail, deleteTrail } from '../api/data/TrailData';
+import { createTrail, deleteTrail, getTrailsByBikerId } from '../api/data/TrailData';
 import { useNavigate } from 'react-router-dom';
 
 export default function ExploreTrailCard({ trail, setTrails, biker }) {
@@ -24,7 +24,8 @@ export default function ExploreTrailCard({ trail, setTrails, biker }) {
         navigate(`/edit-trail/${trail.id}`)
     } else if (method === 'add') {
         trail.bikerId = biker.id;
-        createTrail(trail).then(setTrails);
+        createTrail(trail).then(getTrailsByBikerId(0).then(setTrails));
+        alert(`Added ${trail.name} to your trails.`);
     }
   }
 
@@ -46,6 +47,8 @@ export default function ExploreTrailCard({ trail, setTrails, biker }) {
           Distance: {trail.distance} mi
           <br />
           Grade: {trail.grade}%
+          <br />
+          Time: {trail.time} hour(s)
         </Typography>
       </CardContent>
       <CardActions>

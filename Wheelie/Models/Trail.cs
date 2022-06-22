@@ -9,5 +9,6 @@
         public string Location { get; set; }
         public double Distance { get; set; }
         public int Grade { get; set; }
+        public double Time {  get; set; }
     }
 }

@@ -41,20 +41,19 @@ export const login = (email, pw) => {
     });
 };
 
-
 export const logout = () => {
   firebase.auth().signOut()
 };
-
 
 export const signup = (biker, password) => {
   return firebase.auth().createUserWithEmailAndPassword(biker.email, password)
     .then((createResponse) => createBiker({
       ...biker,
       firebaseUserId: createResponse.user.uid
-    }).then(() => _onLoginStatusChangedHandler(true)));
+    }).then(() => {
+      _onLoginStatusChangedHandler(true);
+    }));
 };
-
 
 // This function will be overwritten when the react app calls `onLoginStatusChange`
 let _onLoginStatusChangedHandler = () => {

@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -10,14 +9,11 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-import BikeForm from '../components/BikeForm';
-import { getBike } from '../api/data/BikeData';
+import ClothingForm from '../components/ClothingForm';
 import Footer from '../components/Footer';
 
 const drawerWidth = 240;
@@ -68,22 +64,8 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
-  const [editBike, setEditBike] = useState({});
-  const { bikeId } = useParams();
-
-  useEffect(() => {
-    let isMounted = true;
-
-    if (isMounted) {
-      getBike(bikeId).then(setEditBike);
-    }
-
-    return() => {
-      isMounted = false;
-    };
-  }, [bikeId]);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -131,13 +113,8 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Edit Bike: {editBike.brand}
+              Add Clothing Set
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -183,7 +160,7 @@ function DashboardContent() {
                 alignItems: 'center',
               }}
             >
-              <BikeForm bike={editBike} />
+              <ClothingForm clothing={{}} biker={biker} />
             </Box>
           </Container>
         </Box>
@@ -193,6 +170,6 @@ function DashboardContent() {
   );
 }
 
-export default function EditBike() {
-  return <DashboardContent />;
+export default function AddClothing({ biker }) {
+  return <DashboardContent biker={biker} />;
 }

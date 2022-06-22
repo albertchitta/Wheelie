@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,15 +10,13 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-import BikeForm from '../components/BikeForm';
-import { getBike } from '../api/data/BikeData';
+import ClothingForm from '../components/ClothingForm';
 import Footer from '../components/Footer';
+import { getClothing } from '../api/data/ClothingData';
 
 const drawerWidth = 240;
 
@@ -70,24 +68,24 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const [open, setOpen] = useState(true);
-  const [editBike, setEditBike] = useState({});
-  const { bikeId } = useParams();
+  const [editClothing, setEditClothing] = useState({});
+  const { clothingId } = useParams();
+
+  const toggleDrawer = () => {
+    setOpen(!open);
+  };
 
   useEffect(() => {
     let isMounted = true;
 
     if (isMounted) {
-      getBike(bikeId).then(setEditBike);
+      getClothing(clothingId).then(setEditClothing);
     }
 
     return() => {
       isMounted = false;
     };
-  }, [bikeId]);
-
-  const toggleDrawer = () => {
-    setOpen(!open);
-  };
+  }, [clothingId]);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -131,13 +129,8 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Edit Bike: {editBike.brand}
+              Add Clothing Set
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -183,7 +176,7 @@ function DashboardContent() {
                 alignItems: 'center',
               }}
             >
-              <BikeForm bike={editBike} />
+              <ClothingForm clothing={editClothing} />
             </Box>
           </Container>
         </Box>
@@ -193,6 +186,6 @@ function DashboardContent() {
   );
 }
 
-export default function EditBike() {
+export default function EditClothing() {
   return <DashboardContent />;
 }

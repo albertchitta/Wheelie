@@ -9,18 +9,19 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { createBike, updateBike } from '../api/data/BikeData';
+import { createClothing, updateClothing } from '../api/data/ClothingData';
 
 const initialState = {
-  imageUrl: '',
-  brand: '',
-  color: '',
-  accessories: ''
+	jersey: '',
+	goggles: '',
+	shoes: '',
+	helmet: '',
+	other: ''
 };
 
 const mdTheme = createTheme();
 
-function DashboardContent({ bike, biker }) {
+function DashboardContent({ clothing, biker }) {
   const [formInput, setFormInput] = useState(initialState);
   const navigate = useNavigate();
 
@@ -28,14 +29,15 @@ function DashboardContent({ bike, biker }) {
     let isMounted = true;
 
     if (isMounted) {
-      if (bike.id) {
+      if (clothing.id) {
         setFormInput({
-          id: bike.id,
-          bikerId: bike.bikerId,
-          imageUrl: bike.imageUrl,
-          brand: bike.brand,
-          color: bike.color,
-          accessories: bike.accessories,
+          id: clothing.id,
+          bikerId: clothing.bikerId,
+          jersey: clothing.jersey,
+          goggles: clothing.goggles,
+          shoes: clothing.shoes,
+          helmet: clothing.helmet,
+          other: clothing.other,
         });
       }
     }
@@ -43,7 +45,7 @@ function DashboardContent({ bike, biker }) {
     return() => {
       isMounted = false;
     }
-  }, [bike]);
+  }, [clothing]);
 
   const resetForm = () => {
     setFormInput(initialState);
@@ -59,14 +61,14 @@ function DashboardContent({ bike, biker }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(bike.id) {
-      updateBike(formInput).then(() => {
+    if(clothing.id) {
+      updateClothing(formInput).then(() => {
         resetForm();
         navigate('/gear');
       });
     } else {
         formInput.bikerId = biker.id;
-        createBike(formInput).then(() => {
+        createClothing(formInput).then(() => {
           resetForm();
           navigate('/gear');
         });
@@ -98,21 +100,21 @@ function DashboardContent({ bike, biker }) {
                     <TextField
                       required
                       fullWidth
-                      id="imageUrl"
-                      label="Image Url"
-                      name="imageUrl"
-                      value={formInput.imageUrl || ''}
+                      id="jersey"
+                      label="Jersey"
+                      name="jersey"
+                      value={formInput.jersey || ''}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      name="brand"
+                      name="goggles"
                       required
                       fullWidth
-                      id="brand"
-                      label="Brand Name"
-                      value={formInput.brand || ''}
+                      id="goggles"
+                      label="Sunglasses"
+                      value={formInput.goggles || ''}
                       onChange={handleChange}
                     />
                   </Grid>
@@ -120,21 +122,32 @@ function DashboardContent({ bike, biker }) {
                     <TextField
                       required
                       fullWidth
-                      name="color"
-                      label="Color"
-                      id="color"
-                      value={formInput.color || ''}
+                      name="shoes"
+                      label="Shoes"
+                      id="shoes"
+                      value={formInput.shoes || ''}
                       onChange={handleChange}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      name="accessories"
+                      name="helmet"
                       required
                       fullWidth
-                      id="accessories"
-                      label="Accessories"
-                      value={formInput.accessories || ''}
+                      id="helmet"
+                      label="Helmet"
+                      value={formInput.helmet || ''}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      name="other"
+                      required
+                      fullWidth
+                      id="other"
+                      label="Other"
+                      value={formInput.other || ''}
                       onChange={handleChange}
                     />
                   </Grid>
@@ -145,7 +158,7 @@ function DashboardContent({ bike, biker }) {
                   sx={{ mt: 3, mb: 2 }}
                   onClick={handleSubmit}
                 >
-                  {bike.id ? 'Update' : 'Add'}
+                  {clothing.id ? 'Update' : 'Add'}
                 </Button>
               </Box>
           </Container>
@@ -155,10 +168,10 @@ function DashboardContent({ bike, biker }) {
   );
 }
 
-export default function BikeForm({ bike = {}, biker }) {
-  return <DashboardContent bike={bike} biker={biker} />;
+export default function ClothingForm({ clothing = {}, biker }) {
+  return <DashboardContent clothing={clothing} biker={biker} />;
 }
 
-BikeForm.propTypes = {
-  bike: PropTypes.shape({}).isRequired
+ClothingForm.propTypes = {
+  clothing: PropTypes.shape({}).isRequired
 };

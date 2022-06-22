@@ -9,13 +9,12 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
 import TrailForm from '../components/TrailForm';
+import Footer from '../components/Footer';
 
 const drawerWidth = 240;
 
@@ -76,7 +75,11 @@ function DashboardContent({ biker }) {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={open}
+          sx={{
+            backgroundColor: '#000000'
+          }}
+        >
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -96,6 +99,15 @@ function DashboardContent({ biker }) {
             </IconButton>
             <Typography
               component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+              sx={{ marginRight: "1em" }}
+            >
+              Wheelie
+            </Typography>
+            <Typography
+              component="h1"
               variant="h6"
               color="inherit"
               noWrap
@@ -103,11 +115,6 @@ function DashboardContent({ biker }) {
             >
               Create Trail
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -138,7 +145,7 @@ function DashboardContent({ biker }) {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
+            minHeight: '100vh',
             overflow: 'auto',
           }}
         >
@@ -158,6 +165,7 @@ function DashboardContent({ biker }) {
           </Container>
         </Box>
       </Box>
+      <Footer />
     </ThemeProvider>
   );
 }

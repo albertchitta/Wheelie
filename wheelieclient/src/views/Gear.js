@@ -9,7 +9,6 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -25,20 +24,7 @@ import Container from '@mui/material/Container';
 import { getBikesByBikerId } from '../api/data/BikeData';
 import { getClothingsByBikerId } from '../api/data/ClothingData';
 import ClothingCard from '../components/ClothingCard';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
+import Footer from '../components/Footer';
 
 const drawerWidth = 240;
 
@@ -90,6 +76,7 @@ const mdTheme = createTheme();
 
 function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
+  // const [value, setValue] = useState(localStorage.getItem('value'));
   const [value, setValue] = useState('bikes');
   const [bikes, setBikes] = useState([]);
   const [clothings, setClothings] = useState([]);
@@ -97,6 +84,7 @@ function DashboardContent({ biker }) {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    // setValue(localStorage.setItem('value', newValue));
   };
 
   const handleClick = (method) => {
@@ -114,7 +102,7 @@ function DashboardContent({ biker }) {
   useEffect(() => {
     let isMounted = true;
     
-    if (isMounted) {
+    if (isMounted && Object.keys(biker).length !== 0) {
       getBikesByBikerId(biker.id).then(setBikes);
       getClothingsByBikerId(biker.id).then(setClothings);
     }
@@ -122,13 +110,17 @@ function DashboardContent({ biker }) {
     return () => {
       isMounted = false;
     }
-  }, [biker.id]);
+  }, [biker]);
 
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={open}
+          sx={{
+            backgroundColor: '#000000'
+          }}
+        >
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -146,6 +138,15 @@ function DashboardContent({ biker }) {
             >
               <MenuIcon />
             </IconButton>
+            <Typography
+              component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+              sx={{ marginRight: "1em" }}
+            >
+              Wheelie
+            </Typography>
             <Typography
               component="h1"
               variant="h6"
@@ -185,7 +186,7 @@ function DashboardContent({ biker }) {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
+            minHeight: '100vh',
             overflow: 'auto',
           }}
         >
@@ -223,10 +224,10 @@ function DashboardContent({ biker }) {
                 </Grid>
               </TabPanel>
             </TabContext>
-            <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
+      <Footer />
     </ThemeProvider>
   );
 }

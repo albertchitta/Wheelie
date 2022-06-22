@@ -5,10 +5,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -22,20 +20,6 @@ const initialState = {
   distance: '',
   grade: ''
 };
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
 
 const mdTheme = createTheme();
 
@@ -105,7 +89,6 @@ function DashboardContent({ trail }) {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
             overflow: 'auto',
           }}
         >
@@ -186,7 +169,6 @@ function DashboardContent({ trail }) {
                   {trail.id ? 'Update' : 'Create'}
                 </Button>
               </Box>
-            <Copyright sx={{ mt: 5 }} />
           </Container>
         </Box>
       </Box>

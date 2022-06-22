@@ -11,26 +11,12 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
 import { getTrailsByBikerId } from '../api/data/TrailData';
 import TrailCard from '../components/TrailCard';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
+import Footer from '../components/Footer';
 
 const drawerWidth = 240;
 
@@ -91,20 +77,24 @@ function DashboardContent({ biker }) {
   useEffect(() => {
     let isMounted = true;
     
-    if (isMounted) {
+    if (isMounted && Object.keys(biker).length !== 0) {
       getTrailsByBikerId(biker.id).then(setTrails);
     }
 
     return () => {
       isMounted = false;
     }
-  }, [biker.id]);
+  }, [biker]);
 
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={open}
+          sx={{
+            backgroundColor: '#000000'
+          }}
+        >
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -122,6 +112,15 @@ function DashboardContent({ biker }) {
             >
               <MenuIcon />
             </IconButton>
+            <Typography
+              component="h1"
+              variant="h4"
+              color="inherit"
+              noWrap
+              sx={{ marginRight: "1em" }}
+            >
+              Wheelie
+            </Typography>
             <Typography
               component="h1"
               variant="h6"
@@ -161,16 +160,14 @@ function DashboardContent({ biker }) {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
+            minHeight: '100vh',
             overflow: 'auto',
           }}
         >
           <Toolbar />
           <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
             <Grid container spacing={3}>
-              {/* Chart */}
               <Grid item xs={12} md={8} lg={9}>
-                <header>TRAILS</header>
                 {trails.length ? (
                   trails.map((trail) => (
                     <TrailCard key={trail.id} trail={trail} setTrails={setTrails} />
@@ -180,10 +177,10 @@ function DashboardContent({ biker }) {
                 )}
               </Grid>
             </Grid>
-            <Copyright sx={{ pt: 4 }} />
           </Container>
         </Box>
       </Box>
+      <Footer />
     </ThemeProvider>
   );
 }

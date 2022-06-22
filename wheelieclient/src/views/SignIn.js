@@ -14,20 +14,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { login } from '../api/authManager';
 import { useNavigate } from 'react-router-dom';
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
-
 const theme = createTheme();
 
 export default function SignInSide() {
@@ -44,7 +30,7 @@ export default function SignInSide() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component="main" sx={{ minHeight: '100vh' }}>
         <CssBaseline />
         <Grid
           item
@@ -75,7 +61,7 @@ export default function SignInSide() {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1, minHeight: '100vh'}}>
               <TextField
                 margin="normal"
                 required
@@ -120,7 +106,6 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
             </Box>
           </Box>
         </Grid>

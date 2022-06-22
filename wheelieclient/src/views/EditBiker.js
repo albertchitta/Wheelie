@@ -10,15 +10,12 @@ import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
-import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-import BikeForm from '../components/BikeForm';
-import { getBike } from '../api/data/BikeData';
-import Footer from '../components/Footer';
+import { getBiker } from '../api/data/BikerData';
+import BikerForm from '../components/BikerForm';
 
 const drawerWidth = 240;
 
@@ -68,22 +65,22 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 
 const mdTheme = createTheme();
 
-function DashboardContent() {
+function DashboardContent({ biker }) {
   const [open, setOpen] = useState(true);
-  const [editBike, setEditBike] = useState({});
-  const { bikeId } = useParams();
+  const [editBiker, setEditBiker] = useState({});
+  const { firebaseUserId } = useParams();
 
   useEffect(() => {
     let isMounted = true;
 
     if (isMounted) {
-      getBike(bikeId).then(setEditBike);
+      getBiker(firebaseUserId).then(setEditBiker);
     }
 
     return() => {
       isMounted = false;
     };
-  }, [bikeId]);
+  }, [firebaseUserId]);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -131,13 +128,8 @@ function DashboardContent() {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Edit Bike: {editBike.brand}
+              Edit Biker: {biker.name}
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -183,16 +175,15 @@ function DashboardContent() {
                 alignItems: 'center',
               }}
             >
-              <BikeForm bike={editBike} />
+              <BikerForm biker={editBiker} />
             </Box>
           </Container>
         </Box>
       </Box>
-      <Footer />
     </ThemeProvider>
   );
 }
 
-export default function EditBike() {
-  return <DashboardContent />;
+export default function EditBiker({ biker }) {
+  return <DashboardContent biker={biker} />;
 }

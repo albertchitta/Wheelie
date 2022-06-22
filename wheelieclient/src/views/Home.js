@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -11,25 +11,15 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import { Button } from '@mui/material';
 import Title from '../components/Title';
+import Footer from '../components/Footer';
+import Banner from '../components/Banner';
 import { mainListItems, secondaryListItems } from '../components/ListItems';
-
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      {new Date().getFullYear()}
-      {' '}
-      <Link color="inherit" href="https://albertchittaphong.netlify.app/">
-        Albert Chittaphong
-      </Link>{'. '}
-      All rights reserved.
-    </Typography>
-  );
-}
+import { getTrailsByBikerId } from '../api/data/TrailData';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -80,16 +70,50 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const mdTheme = createTheme();
 
 function DashboardContent({ biker }) {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = useState(true);
+  const [trails, setTrails] = useState([]);
+  const navigate = useNavigate();
+  let totalDistance = 0;
+  let numOfRides = 0;
+  let totalTime = 0;
+
+  const handleClick = (method) => {
+    if (method === 'edit') {
+      navigate(`/edit-biker/${biker.firebaseUserId}`);
+    }
+  }
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isMounted && Object.keys(biker).length !== 0) {
+      getTrailsByBikerId(biker.id).then(setTrails);
+    }
+
+    return () => {
+      isMounted = false;
+    }
+  }, [biker]);
+
+  trails.forEach((trail) => {
+    totalDistance += trail.distance;
+    totalTime += trail.time;
+    numOfRides++;
+  });
 
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-        <AppBar position="absolute" open={open}>
+        <AppBar position="absolute" open={open}
+          sx={{
+            backgroundColor: '#000000'
+          }}
+        >
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -109,22 +133,26 @@ function DashboardContent({ biker }) {
             </IconButton>
             <Typography
               component="h1"
-              variant="h6"
+              variant="h4"
               color="inherit"
               noWrap
-              sx={{ flexGrow: 1 }}
+              sx={{ marginRight: "1em" }}
             >
-              Home
+              Wheelie
             </Typography>
           </Toolbar>
         </AppBar>
-        <Drawer variant="permanent" open={open}>
+        <Drawer variant="permanent" open={open}
+          sx={{
+            backgroundColor: '#fca311', 
+          }}
+        >
           <Toolbar
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              px: [1],
+              px: [1]
             }}
           >
             <IconButton onClick={toggleDrawer}>
@@ -146,16 +174,27 @@ function DashboardContent({ biker }) {
                 ? theme.palette.grey[100]
                 : theme.palette.grey[900],
             flexGrow: 1,
-            height: '100vh',
+            minHeight: '100vh',
             overflow: 'auto',
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            <h1>WHEELIE</h1>
-            <h2>{biker.name}</h2>
-            <h4>{biker.userName}</h4>
+          <Banner biker={biker} />
+          <Container maxWidth="xs"
+            sx={{
+              mt: 4, mb: 4
+            }}
+          >
             <Grid container spacing={3}>
+              <Grid item xs={12} md={8} lg={9}>
+                <Typography component="p" variant="h2">
+                  {biker.name}
+                </Typography>
+                <Typography component="p" variant="h4">
+                  @{biker.userName}
+                  <Button onClick={() => handleClick('edit')}>Edit</Button>
+                </Typography>
+              </Grid>
               <Grid item xs={12} md={8} lg={9}>
                 <Title>Location</Title>
                 <Typography component="p" variant="h4">
@@ -171,24 +210,24 @@ function DashboardContent({ biker }) {
               <Grid item xs={12} md={8} lg={9}>
                 <Title>Rides</Title>
                 <Typography component="p" variant="h4">
-                  {biker.rides}
+                  {numOfRides}
                 </Typography>
               </Grid>
               <Grid item xs={12} md={8} lg={9}>
-                <Title>Distance</Title>
+                <Title>Total Distance Ridden</Title>
                 <Typography component="p" variant="h4">
-                  {biker.distance}
+                  {totalDistance} miles
                 </Typography>
               </Grid>
               <Grid item xs={12} md={8} lg={9}>
-                <Title>Total Biking Distance</Title>
+                <Title>Total Time Ridden</Title>
                 <Typography component="p" variant="h4">
-                  12345 miles
+                  {totalTime} hours
                 </Typography>
               </Grid>
             </Grid>
-            <Copyright sx={{ pt: 4 }} />
           </Container>
+      <Footer />
         </Box>
       </Box>
     </ThemeProvider>

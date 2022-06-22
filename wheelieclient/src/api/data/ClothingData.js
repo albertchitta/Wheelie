@@ -34,7 +34,7 @@ const getClothingsByBikerId = (bikerId) => new Promise((resolve, reject) => {
 const getClothing = (id) => new Promise((resolve, reject) => {
     return getToken().then((token) => {
         axios
-        .get(`${dbUrl}/clothings/${id}`, {
+        .get(`${dbUrl}/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -81,7 +81,7 @@ const deleteClothing = (clothing) => new Promise((resolve, reject) => {
                 Authorization: `Bearer ${token}`,
             },
         })
-        .then(() => getClothings().then(resolve))
+        .then(() => getClothingsByBikerId(clothing.bikerId).then(resolve))
         .catch(reject);
     });
 });

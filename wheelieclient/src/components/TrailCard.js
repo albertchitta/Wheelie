@@ -44,6 +44,8 @@ export default function TrailCard({ trail, setTrails, biker }) {
           Distance: {trail.distance} mi
           <br />
           Grade: {trail.grade}%
+          <br />
+          Time: {trail.time} hour(s)
         </Typography>
       </CardContent>
       <CardActions>
